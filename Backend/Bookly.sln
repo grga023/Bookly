@@ -3,7 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bookly.API", "Bookly.API\Bookly.API.csproj", "{CE669149-501D-4D56-AC71-9E6681F154D8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bookly.API", "Bookly.API\Bookly.API.csproj", "{CE669149-501D-4D56-AC71-9E6681F154D8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bookly.Domain", "Bookly.Domain\Bookly.Domain.csproj", "{C7574861-BE8B-411F-9226-A902B7E99B48}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bookly.Infrastructure.Identity", "Bookly.Infrastructure.Identity\Bookly.Infrastructure.Identity.csproj", "{F20E55E2-BC9F-4C7E-98CB-0C84D89F331A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bookly.Infrastructure.Persistence", "Bookly.Infrastructure.Persistence\Bookly.Infrastructure.Persistence.csproj", "{32B65A16-8144-47F4-9A0F-DC025349114D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{318D750E-39AF-4F60-97D2-0F3A98B50DED}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,9 +23,25 @@ Global
 		{CE669149-501D-4D56-AC71-9E6681F154D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CE669149-501D-4D56-AC71-9E6681F154D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CE669149-501D-4D56-AC71-9E6681F154D8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C7574861-BE8B-411F-9226-A902B7E99B48}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C7574861-BE8B-411F-9226-A902B7E99B48}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C7574861-BE8B-411F-9226-A902B7E99B48}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C7574861-BE8B-411F-9226-A902B7E99B48}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F20E55E2-BC9F-4C7E-98CB-0C84D89F331A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F20E55E2-BC9F-4C7E-98CB-0C84D89F331A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F20E55E2-BC9F-4C7E-98CB-0C84D89F331A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F20E55E2-BC9F-4C7E-98CB-0C84D89F331A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{32B65A16-8144-47F4-9A0F-DC025349114D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32B65A16-8144-47F4-9A0F-DC025349114D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32B65A16-8144-47F4-9A0F-DC025349114D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32B65A16-8144-47F4-9A0F-DC025349114D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F20E55E2-BC9F-4C7E-98CB-0C84D89F331A} = {318D750E-39AF-4F60-97D2-0F3A98B50DED}
+		{32B65A16-8144-47F4-9A0F-DC025349114D} = {318D750E-39AF-4F60-97D2-0F3A98B50DED}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {274F5E71-0EF2-4B13-8CC3-D61E5689C9E8}
