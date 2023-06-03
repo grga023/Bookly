@@ -1,7 +1,15 @@
+import Header from "./komponente/Header";
+import Footer from "./komponente/Footer";
+import AppRoutes from "./komponente/AppRoutes";
+
 function App() {
   return (
     <>
-      <h1 className="text-primary font-medium text-3xl">hello world</h1>
+      <Header />
+      <main className="my-20 container">
+        <AppRoutes />
+      </main>
+      <Footer />
     </>
   )
 }
