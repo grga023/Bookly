@@ -1,4 +1,10 @@
+using Bookly.Domain.Apstrakcije;
+using Bookly.Domain.Apstrakcije.Baza;
+using Bookly.Domain.Servisi.Korisnik;
+using Bookly.Infrastructure.Identity;
+using Bookly.Infrastructure.Identity.Entiteti;
 using Bookly.Infrastructure.Persistence;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -6,6 +12,51 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddDbContext<AplikacioniDbContext>(
     opts => opts.UseSqlServer(connectionString: builder.Configuration.GetConnectionString("BooklyDb")));
+
+builder.Services.AddDbContext<IdentityDbContext>(
+    opts => opts.UseSqlServer(connectionString: builder.Configuration.GetConnectionString("IdentityDb")));
+
+CookieBuilder cookie = new CookieBuilder
+{
+    SameSite = SameSiteMode.None,
+    SecurePolicy = CookieSecurePolicy.Always,
+    HttpOnly = true,
+    IsEssential = true,
+    Name = IdentityConstants.ApplicationScheme
+};
+
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.Events.OnRedirectToLogin = (context) =>
+    {
+        context.Response.StatusCode = 401;
+        return Task.CompletedTask;
+    };
+    options.ExpireTimeSpan = TimeSpan.FromDays(1);
+    options.SlidingExpiration = true;
+
+    options.Cookie = cookie;
+});
+
+builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
+{
+    options.SignIn.RequireConfirmedEmail = false;
+    options.SignIn.RequireConfirmedAccount = false;
+})
+    .AddEntityFrameworkStores<IdentityDbContext>();
+
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    options.Password.RequiredLength = 8;
+    options.User.RequireUniqueEmail = true;
+});
+
+builder.Services.AddScoped<IAplikacioniDbContext>(sp => sp.GetRequiredService<AplikacioniDbContext>());
+builder.Services.AddScoped<IAplikacioniUnitOfWork, AplikacioniUnitOfWork>();
+builder.Services.AddScoped<IIdentityServis, IdentityServis>();
+builder.Services.AddScoped<KorisnikServis>();
+
+builder.Services.AddAuthorization();
 
 
 builder.Services.AddControllers();
@@ -23,6 +74,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 
