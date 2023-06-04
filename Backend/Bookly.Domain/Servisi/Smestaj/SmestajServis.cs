@@ -1,5 +1,7 @@
 ﻿using Bookly.Domain.Apstrakcije.Baza;
+using Bookly.Domain.Entiteti;
 using Bookly.Domain.Servisi.Smestaj.DTO;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,5 +33,11 @@ namespace Bookly.Domain.Servisi.Smestaj
             _aplikacioniDbContext.Apartmani.Add(apartmanZaDodati);
             await _aplikacioniDbContext.SaveChangesAsync();
         }
+
+        public async Task<List<Apartman>> PrikazSvihSmestaja() =>
+            await _aplikacioniDbContext.Apartmani.ToListAsync();
+
+        public async Task<Apartman> PrikazSvihSmestajaPoId(Guid id) =>
+            await _aplikacioniDbContext.Apartmani.FindAsync(id);
     }
 }
