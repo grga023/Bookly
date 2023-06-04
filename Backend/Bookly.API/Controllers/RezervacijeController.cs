@@ -2,7 +2,6 @@
 using Bookly.Domain.Servisi.Rezervacija;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Identity.Client;
 
 namespace Bookly.API.Controllers
 {
