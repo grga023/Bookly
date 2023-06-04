@@ -4,6 +4,7 @@ using Bookly.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Bookly.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(AplikacioniDbContext))]
-    partial class AplikacioniDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230604172959_dodane-rezervacije")]
+    partial class dodanerezervacije
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -109,7 +112,7 @@ namespace Bookly.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("KorisnikID");
 
-                    b.ToTable("Rezervacije");
+                    b.ToTable("Rezervacija");
                 });
 
             modelBuilder.Entity("Bookly.Domain.Entiteti.Rezervacija", b =>

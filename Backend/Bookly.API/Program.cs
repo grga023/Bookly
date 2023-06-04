@@ -1,6 +1,7 @@
 using Bookly.Domain.Apstrakcije;
 using Bookly.Domain.Apstrakcije.Baza;
 using Bookly.Domain.Servisi.Korisnik;
+using Bookly.Domain.Servisi.Rezervacija;
 using Bookly.Domain.Servisi.Smestaj;
 using Bookly.Infrastructure.Email;
 using Bookly.Infrastructure.Identity;
@@ -69,6 +70,7 @@ builder.Services.AddScoped<IIdentityServis, IdentityServis>();
 builder.Services.AddTransient<IEmailServis, EmailServis>();
 builder.Services.AddScoped<KorisnikServis>();
 builder.Services.AddScoped<SmestajServis>();
+builder.Services.AddScoped<RezervacijaServis>();
 
 builder.Services.AddAuthorization();
 

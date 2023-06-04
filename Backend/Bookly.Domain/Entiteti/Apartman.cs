@@ -1,5 +1,6 @@
-﻿using Bookly.Domain.Entiteti.Bazni;
-using System.Runtime.InteropServices;
+﻿using Bookly.Domain.Ekstenzije;
+using Bookly.Domain.Entiteti.Bazni;
+using System.Net;
 
 namespace Bookly.Domain.Entiteti
 {
@@ -11,6 +12,7 @@ namespace Bookly.Domain.Entiteti
         public double Cena { get; private set; }
         public double Ocena { get; private set; }
         public string Opis { get; private set; }
+        public List<Rezervacija> Rezervacije { get; set; } = new();
 
         public Apartman(Guid id, string naziv, string mesto, string drzava, double cena, double ocena, string opis) : base(id)
         {
@@ -22,7 +24,17 @@ namespace Bookly.Domain.Entiteti
             Opis = opis;
         }
 
-        public Apartman() { }
+        private Apartman() { }
+
+        public bool ProveriDostupnostPoOpseguDatuma(DateTime pocetniDatum, DateTime kranjiDatum)
+        {
+            return Rezervacije.Where(
+                                rezervacija =>
+                                pocetniDatum.DatumUOpsegu(rezervacija.DatumDolaska, rezervacija.DatumDolaska) &&
+                                kranjiDatum.DatumUOpsegu(rezervacija.DatumDolaska, rezervacija.DatumDolaska))
+                              .Any();
+        }
+
     }
 }
 

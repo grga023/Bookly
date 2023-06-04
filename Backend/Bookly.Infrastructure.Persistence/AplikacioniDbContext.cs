@@ -14,4 +14,6 @@ public class AplikacioniDbContext : DbContext, IAplikacioniDbContext
     public DbSet<Apartman> Apartmani => Set<Apartman>();
 
     public DbSet<Korisnik> Kornisici => Set<Korisnik>();
+
+    public DbSet<Rezervacija> Rezervacije => Set<Rezervacija>();
 }
