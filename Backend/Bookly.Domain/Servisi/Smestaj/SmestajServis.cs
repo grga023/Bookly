@@ -29,7 +29,7 @@ namespace Bookly.Domain.Servisi.Smestaj
                                                        opis: noviSmestaj.Opis);
 
             _aplikacioniDbContext.Apartmani.Add(apartmanZaDodati);
-            _ = _aplikacioniDbContext.SaveChangesAsync();
+            await _aplikacioniDbContext.SaveChangesAsync();
         }
     }
 }
