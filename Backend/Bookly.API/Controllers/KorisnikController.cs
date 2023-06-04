@@ -1,14 +1,21 @@
 ﻿using Bookly.API.Modeli.Request;
+using Bookly.API.Utils;
 using Bookly.Domain.Servisi.Korisnik;
 using Bookly.Domain.Servisi.Korisnik.DTO;
+using Bookly.Infrastructure.Identity;
+using Bookly.Infrastructure.Identity.Entiteti;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace Bookly.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class KorisniciController : ControllerBase
+    public class KorisniciController : BaseController
     {
         private readonly KorisnikServis _korisnikServis;
         public KorisniciController(KorisnikServis korisnikServis)
@@ -34,5 +41,10 @@ namespace Bookly.API.Controllers
         [HttpPost("resetuj-sifru")]
         public async Task ResetujSifru(string email, string token, string novaLozinka) =>
             await _korisnikServis.ResetujSifruAsync(email, token, novaLozinka);
+
+        [HttpPut]
+        [Authorize(Roles = IdentityUloge.KORISNIK)]
+        public async Task ModifikujKorisnika(NoviKorisnikDTO izmenjeniKorisnikDto) =>
+            await _korisnikServis.ModifikujKorisnikaAsync(ID, izmenjeniKorisnikDto);
     }
 }
