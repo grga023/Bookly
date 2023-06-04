@@ -39,4 +39,21 @@ public class IdentityServis : IIdentityServis
 
     public async Task IzlogujKorisnikaAsync() => 
         await _signInManager.SignOutAsync();
+
+    public async Task<string> PreuzmiTokenZaZaboravljenuSifruAsync(string email)
+    {
+        ApplicationUser korisnikZaResetovanjeSifre = await _userManager.FindByEmailAsync(email) ?? 
+            throw new KeyNotFoundException("Korisnik sa unetom e-mail adresom ne postoji");
+
+        string token = await _userManager.GeneratePasswordResetTokenAsync(korisnikZaResetovanjeSifre);
+        return token;
+    }
+
+    public async Task ResetujSifruAsync(string email, string token, string noviPassword)
+    {
+        ApplicationUser korisnikZaResetovanjeSifre = await _userManager.FindByEmailAsync(email) ??
+            throw new KeyNotFoundException("Korisnik sa unetom e-mail adresom ne postoji");
+
+        await _userManager.ResetPasswordAsync(korisnikZaResetovanjeSifre, token, noviPassword);
+    }
 }

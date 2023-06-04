@@ -26,5 +26,13 @@ namespace Bookly.API.Controllers
 
         [HttpPost("logout")]
         public async Task IzlogujKorisnika() => await _korisnikServis.IzlogujKorisnikaAsync();
+
+        [HttpGet("token-zaboravljena-sifra")]
+        public async Task GenerisiTokenZaboravljeneSifre(string email) => 
+            await _korisnikServis.GenerisiTokenZaResetovanjeSifreAsync(email);
+
+        [HttpPost("resetuj-sifru")]
+        public async Task ResetujSifru(string email, string token, string novaLozinka) =>
+            await _korisnikServis.ResetujSifruAsync(email, token, novaLozinka);
     }
 }
