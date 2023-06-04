@@ -11,6 +11,9 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+builder.Services.AddControllers();
+
 builder.Services.AddDbContext<AplikacioniDbContext>(
     opts => opts.UseSqlServer(connectionString: builder.Configuration.GetConnectionString("BooklyDb")));
 
@@ -18,28 +21,6 @@ builder.Services.AddDbContext<IdentityDbContext>(
     opts => opts.UseSqlServer(connectionString: builder.Configuration.GetConnectionString("IdentityDb")));
 
 builder.Services.Configure<SmtpGoogleKonfiguracija>(builder.Configuration.GetSection("SmtpGoogleKonfiguracija"));
-
-CookieBuilder cookie = new CookieBuilder
-{
-    SameSite = SameSiteMode.None,
-    SecurePolicy = CookieSecurePolicy.Always,
-    HttpOnly = true,
-    IsEssential = true,
-    Name = IdentityConstants.ApplicationScheme
-};
-
-builder.Services.ConfigureApplicationCookie(options =>
-{
-    options.Events.OnRedirectToLogin = (context) =>
-    {
-        context.Response.StatusCode = 401;
-        return Task.CompletedTask;
-    };
-    options.ExpireTimeSpan = TimeSpan.FromDays(1);
-    options.SlidingExpiration = true;
-
-    options.Cookie = cookie;
-});
 
 builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
 {
@@ -55,6 +36,32 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.User.RequireUniqueEmail = true;
 });
 
+CookieBuilder cookie = new CookieBuilder
+{
+    SameSite = SameSiteMode.None,
+    SecurePolicy = CookieSecurePolicy.Always,
+    HttpOnly = true,
+    IsEssential = true,
+    Name = IdentityConstants.ApplicationScheme,
+};
+
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.Events.OnRedirectToLogin = (context) =>
+    {
+        context.Response.StatusCode = 401;
+        return Task.CompletedTask;
+    };
+
+    options.ExpireTimeSpan = TimeSpan.FromDays(1);
+    options.SlidingExpiration = true;
+
+    options.Cookie = cookie;
+});
+
+
+
+
 builder.Services.AddScoped<IAplikacioniDbContext>(sp => sp.GetRequiredService<AplikacioniDbContext>());
 builder.Services.AddScoped<IAplikacioniUnitOfWork, AplikacioniUnitOfWork>();
 builder.Services.AddScoped<IIdentityServis, IdentityServis>();
@@ -63,8 +70,6 @@ builder.Services.AddScoped<KorisnikServis>();
 
 builder.Services.AddAuthorization();
 
-
-builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
