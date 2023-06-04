@@ -1,9 +1,12 @@
-﻿using Bookly.Domain.Entiteti.Bazni;
-using System.Runtime.InteropServices;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Bookly.Domain.Entiteti
+namespace Bookly.Domain.Servisi.Smestaj.DTO
 {
-    public class Apartman : Entitet<Guid>
+    public class NoviSmestajDTO
     {
         public string Naziv { get; private set; }
         public string Mesto { get; private set; }
@@ -12,7 +15,7 @@ namespace Bookly.Domain.Entiteti
         public double Ocena { get; private set; }
         public string Opis { get; private set; }
 
-        public Apartman(Guid id, string naziv, string mesto, string drzava, double cena, double ocena, string opis) : base(id)
+        public NoviSmestajDTO(string naziv, string mesto, string drzava, double cena, double ocena, string opis) 
         {
             Naziv = naziv;
             Mesto = mesto;
@@ -21,10 +24,5 @@ namespace Bookly.Domain.Entiteti
             Ocena = ocena;
             Opis = opis;
         }
-
-        public Apartman() { }
     }
 }
-
-
-
