@@ -7,6 +7,7 @@ public interface IAplikacioniDbContext
 {
     public DbSet<Apartman> Apartmani { get; }
     public DbSet<Korisnik> Kornisici { get; }
+    public DbSet<Rezervacija> Rezervacije { get; }
 
     public Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

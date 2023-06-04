@@ -9,6 +9,7 @@ namespace Bookly.Domain.Entiteti
         public string Email { get; set; }
         public DateTime DatumRodjenja { get; set; }
         public string Adresa { get; set; }
+        public List<Rezervacija> Rezervacije { get; set; }
 
         public Korisnik(Guid id, string ime, string prezime, string email, DateTime datumRodjenja, string adresa) : base(id)
         {

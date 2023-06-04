@@ -13,8 +13,6 @@ using System.Net;
 
 namespace Bookly.API.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
     public class KorisniciController : BaseController
     {
         private readonly KorisnikServis _korisnikServis;
