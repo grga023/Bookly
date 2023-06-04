@@ -1,6 +1,7 @@
 using Bookly.Domain.Apstrakcije;
 using Bookly.Domain.Apstrakcije.Baza;
 using Bookly.Domain.Servisi.Korisnik;
+using Bookly.Infrastructure.Email;
 using Bookly.Infrastructure.Identity;
 using Bookly.Infrastructure.Identity.Entiteti;
 using Bookly.Infrastructure.Persistence;
@@ -15,6 +16,8 @@ builder.Services.AddDbContext<AplikacioniDbContext>(
 
 builder.Services.AddDbContext<IdentityDbContext>(
     opts => opts.UseSqlServer(connectionString: builder.Configuration.GetConnectionString("IdentityDb")));
+
+builder.Services.Configure<SmtpGoogleKonfiguracija>(builder.Configuration.GetSection("SmtpGoogleKonfiguracija"));
 
 CookieBuilder cookie = new CookieBuilder
 {
@@ -43,7 +46,8 @@ builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
     options.SignIn.RequireConfirmedEmail = false;
     options.SignIn.RequireConfirmedAccount = false;
 })
-    .AddEntityFrameworkStores<IdentityDbContext>();
+    .AddEntityFrameworkStores<IdentityDbContext>()
+    .AddDefaultTokenProviders();
 
 builder.Services.Configure<IdentityOptions>(options =>
 {
@@ -54,6 +58,7 @@ builder.Services.Configure<IdentityOptions>(options =>
 builder.Services.AddScoped<IAplikacioniDbContext>(sp => sp.GetRequiredService<AplikacioniDbContext>());
 builder.Services.AddScoped<IAplikacioniUnitOfWork, AplikacioniUnitOfWork>();
 builder.Services.AddScoped<IIdentityServis, IdentityServis>();
+builder.Services.AddTransient<IEmailServis, EmailServis>();
 builder.Services.AddScoped<KorisnikServis>();
 
 builder.Services.AddAuthorization();
