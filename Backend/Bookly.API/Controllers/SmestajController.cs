@@ -7,7 +7,7 @@ using Bookly.Domain.Entiteti;
 
 namespace Bookly.API.Controllers
 {
-    public class SmestajController : BaseController
+    public class SmestajController 
     {
         private readonly SmestajServis _smestajServis;
         public SmestajController(SmestajServis smestajServis)

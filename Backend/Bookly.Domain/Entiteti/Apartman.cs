@@ -24,6 +24,14 @@ namespace Bookly.Domain.Entiteti
         }
 
         public Apartman() { }
+        public bool ProveriDostupnostPoOpseguDatuma(DateTime pocetniDatum, DateTime kranjiDatum)
+        {
+            return Rezervacije.Where(
+                                rezervacija =>
+                                pocetniDatum.DatumUOpsegu(rezervacija.DatumDolaska, rezervacija.DatumDolaska) &&
+                                kranjiDatum.DatumUOpsegu(rezervacija.DatumDolaska, rezervacija.DatumDolaska))
+                              .Any();
+        }
     }
 }
 
