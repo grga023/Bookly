@@ -39,5 +39,21 @@ namespace Bookly.Domain.Servisi.Smestaj
 
         public async Task<Apartman> PrikazSvihSmestajaPoId(Guid id) =>
             await _aplikacioniDbContext.Apartmani.FindAsync(id);
+
+        public async Task OceniSmestajAsync(Guid korisnikId, Guid apartmanId, uint ocena)
+        {
+            Apartman apartmanZaOceniti = await 
+                _aplikacioniDbContext.Apartmani
+                .Where(x => x.ID == apartmanId)
+                .Include(x => x.Rezervacije)
+                .ThenInclude(y=>y.Korisnik)
+                .FirstOrDefaultAsync() ?? throw new KeyNotFoundException("Apartman sa unetim ID-em ne postoji!");
+
+            if (!apartmanZaOceniti.Rezervacije.Any(rezervacija => rezervacija.Korisnik.ID == korisnikId && rezervacija.DatumOdlaska < DateTime.Now))
+                throw new ArgumentException("Nije dozvoljeno oceniti apartman ako korisnik nije imao rezervacije u njemu");
+
+            apartmanZaOceniti.PromeniOcenuApartmana(ocena);
+            await _aplikacioniDbContext.SaveChangesAsync();
+        }
     }
 }

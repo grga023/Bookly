@@ -35,6 +35,10 @@ namespace Bookly.Domain.Entiteti
                               .Any();
         }
 
+        public void PromeniOcenuApartmana(uint ocena)
+        {
+            Ocena = (Ocena + ocena)/2;
+        }
     }
 }
 

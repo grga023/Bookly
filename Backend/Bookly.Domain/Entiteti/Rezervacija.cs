@@ -19,6 +19,7 @@ public class Rezervacija : Entitet<Guid>
         Korisnik = korisnik;
         DatumDolaska = datumDolaska;
         DatumOdlaska = datumOdlaska;
+        Status = StatusRezervacije.Na_Cekanju;
     }
     private Rezervacija() { } // EF Core
 
@@ -26,4 +27,15 @@ public class Rezervacija : Entitet<Guid>
     public Korisnik Korisnik { get; private set; }
     public DateTime DatumDolaska { get; private set; }
     public DateTime DatumOdlaska { get; private set; }
+    public StatusRezervacije Status { get; set; }
+
+    public void PromeniStatusRezervacije(StatusRezervacije noviStatusRezervacije) => 
+        Status = noviStatusRezervacije;
+}
+
+public enum StatusRezervacije
+{
+    Na_Cekanju,
+    Odbijena,
+    Odobrena
 }
