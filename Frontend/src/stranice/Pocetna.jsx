@@ -14,7 +14,10 @@ const smestajNiz = [
     cena: '2990',
     ocena: '7.3',
     opis: 'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source.',
-    slika: 'https://images.pexels.com/photos/2844474/pexels-photo-2844474.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
+    slike: [{
+     url: 'https://images.pexels.com/photos/2844474/pexels-photo-2844474.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+     alt: 'Gotiona Babin zub smestaj'
+    }, ]
   },
   {
     id: 2,
@@ -24,7 +27,10 @@ const smestajNiz = [
     cena: '5390',
     ocena: '9.5',
     opis: 'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source.',
-    slika: 'https://images.pexels.com/photos/2844474/pexels-photo-2844474.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
+    slike: [{
+     url: 'https://images.pexels.com/photos/2844474/pexels-photo-2844474.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+     alt: 'Gotiona Babin zub smestaj'
+    }, ]
   },
   {
     id: 3,
@@ -34,7 +40,10 @@ const smestajNiz = [
     cena: '3190',
     ocena: '6.6',
     opis: 'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source.',
-    slika: 'https://images.pexels.com/photos/2844474/pexels-photo-2844474.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
+    slike: [{
+     url: 'https://images.pexels.com/photos/2844474/pexels-photo-2844474.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+     alt: 'Gotiona Babin zub smestaj'
+    }, ]
   },
   {
     id: 4,
@@ -44,7 +53,10 @@ const smestajNiz = [
     cena: '2990',
     ocena: '7.3',
     opis: 'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source.',
-    slika: 'https://images.pexels.com/photos/2844474/pexels-photo-2844474.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
+    slike: [{
+     url: 'https://images.pexels.com/photos/2844474/pexels-photo-2844474.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+     alt: 'Gotiona Babin zub smestaj'
+    }, ]
   },
   {
     id: 5,
@@ -54,7 +66,10 @@ const smestajNiz = [
     cena: '1990',
     ocena: '4.8',
     opis: 'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source.',
-    slika: 'https://images.pexels.com/photos/2844474/pexels-photo-2844474.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
+    slike: [{
+     url: 'https://images.pexels.com/photos/2844474/pexels-photo-2844474.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+     alt: 'Gotiona Babin zub smestaj'
+    }, ]
   },
   {
     id: 6,
@@ -64,7 +79,10 @@ const smestajNiz = [
     cena: '9440',
     ocena: '8.8',
     opis: 'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source.',
-    slika: 'https://images.pexels.com/photos/2844474/pexels-photo-2844474.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
+    slike: [{
+     url: 'https://images.pexels.com/photos/2844474/pexels-photo-2844474.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+     alt: 'Gotiona Babin zub smestaj'
+    }, ]
   },
   {
     id: 7,
@@ -74,7 +92,10 @@ const smestajNiz = [
     cena: '1590',
     ocena: '10',
     opis: 'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source.',
-    slika: 'https://images.pexels.com/photos/2844474/pexels-photo-2844474.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
+    slike: [{
+     url: 'https://images.pexels.com/photos/2844474/pexels-photo-2844474.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+     alt: 'Gotiona Babin zub smestaj'
+    }, ]
   },
   {
     id: 8,
@@ -84,7 +105,10 @@ const smestajNiz = [
     cena: '3000',
     ocena: '2.3',
     opis: 'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source.',
-    slika: 'https://images.pexels.com/photos/2844474/pexels-photo-2844474.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
+    slike: [{
+     url: 'https://images.pexels.com/photos/2844474/pexels-photo-2844474.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+     alt: 'Gotiona Babin zub smestaj'
+    }, ]
   },
 ]
 
@@ -141,7 +165,7 @@ export default function Home(){
         </div>
         {filtriraniSmestaj.length > 0 && <ul className="grid grid-cols-3 gap-6">
           {filtriraniSmestaj.map(smestaj => (
-            <ListaSmestaja key={smestaj.id} id={smestaj.id} naziv={smestaj.naziv} cena={smestaj.cena} ocena={smestaj.ocena} slika={smestaj.slika} mesto={smestaj.mesto} drzava={smestaj.drzava} opis={smestaj.opis} />
+            <ListaSmestaja key={smestaj.id} id={smestaj.id} naziv={smestaj.naziv} cena={smestaj.cena} ocena={smestaj.ocena} slike={smestaj.slike} mesto={smestaj.mesto} drzava={smestaj.drzava} opis={smestaj.opis} />
           ))}
         </ul>}
         {filtriraniSmestaj.length === 0 && <p className="text-medium text-center pt-10 text-xl">Žao nam je, ali za odabrane kriterijume nema reultata.</p>}
