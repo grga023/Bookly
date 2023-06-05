@@ -3,7 +3,7 @@ import { NavLink, Link } from "react-router-dom";
 
 export default function Header(){
   return (
-    <header className="flex sticky bg-neutral-100 top-0 left-0 right-0 items-center justify-between px-20 border-b-2">
+    <header className="flex sticky bg-neutral-100 top-0 left-0 right-0 items-center justify-between px-20 border-b-2 z-[999]">
       <Link to="/">
         <img className="w-[95px] h-[95px]" src={logo} alt="Bookly logo" />
       </Link>
