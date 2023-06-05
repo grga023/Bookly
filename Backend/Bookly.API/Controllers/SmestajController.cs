@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Bookly.Domain.Servisi.Smestaj.DTO;
 using Bookly.Domain.Entiteti;
 using Bookly.API.Utils;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Bookly.API.Controllers
 {
@@ -26,5 +27,15 @@ namespace Bookly.API.Controllers
         [HttpGet("{id}")]
         public async Task<Apartman> GetAllSmestajiPoIDAsync(Guid id) =>
             await _smestajServis.PrikazSvihSmestajaPoId(id);
+
+        [HttpPut("ocena-smestaja/{apartmanId}")]
+        [Authorize]
+        public async Task OceniSmestajAsync(Guid apartmanId, uint ocena)
+        {
+            if(ocena < 1 && ocena > 5)
+                throw new ArgumentOutOfRangeException(nameof(ocena),"Ocena nije validna. Molimo vas unesite vrednost od 1 do 5");
+
+            await _smestajServis.OceniSmestajAsync(ID, apartmanId, ocena);
+        }
     }
 }
