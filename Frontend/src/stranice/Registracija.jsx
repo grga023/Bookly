@@ -24,6 +24,18 @@ export default function Registracija() {
     return razlika >= 18;
   }
 
+  const validirajSifru = (sifra) => {
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()\-_=+{};:,<.>])[a-zA-Z\d!@#$%^&*()\-_=+{};:,<.>]{8,}$/;
+
+    return regex.test(sifra);
+  }
+
+  const validirajMejl = (mejl) => {
+    const regex = /\S+@\S+\.\S+/;
+
+    return regex.test(mejl);
+  }
+
   const validirajFormu = () => {
     let validnaForma = true;
 
@@ -44,7 +56,7 @@ export default function Registracija() {
     if (email.trim() === '') {
       postaviEmailError('Polje "E-mail adresa" je obavezno');
       validnaForma = false;
-    } else if (!/\S+@\S+\.\S+/.test(email)) {
+    } else if (!validirajMejl(email)) {
       postaviEmailError('Unesite ispravan e-mail format');
       validnaForma = false;
     } else {
@@ -54,7 +66,7 @@ export default function Registracija() {
     if (sifra.trim() === '') {
       postaviSifraError('Polje "Šifra" je obavezno');
       validnaForma = false;
-    } else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()\-_=+{};:,<.>])[a-zA-Z\d!@#$%^&*()\-_=+{};:,<.>]{8,}$/.test(sifra)){
+    } else if (!validirajSifru(sifra)){
       postaviSifraError('Šifra nije dovoljno jaka');
       validnaForma = false;
     } else {
@@ -90,6 +102,7 @@ export default function Registracija() {
 
   return (
     <section className="grid h-full place-items-center" aria-label="Napravi novi profil na aplikaciji">
+      <h1 className="mb-6">Registracija</h1>
       <form className="container-form grid grid-cols-6 gap-4" onSubmit={submitovanjeForme} noValidate>
         <div className="grid col-span-3">
           <div className="flex items-center justify-between">
