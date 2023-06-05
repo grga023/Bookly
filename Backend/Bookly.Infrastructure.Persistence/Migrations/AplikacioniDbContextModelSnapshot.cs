@@ -28,9 +28,6 @@ namespace Bookly.Infrastructure.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<double>("Cena")
-                        .HasColumnType("float");
-
                     b.Property<string>("Drzava")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -53,6 +50,30 @@ namespace Bookly.Infrastructure.Persistence.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("Apartmani");
+                });
+
+            modelBuilder.Entity("Bookly.Domain.Entiteti.Bazni.Slike", b =>
+                {
+                    b.Property<Guid>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("ApartmanID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Opis")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("ApartmanID");
+
+                    b.ToTable("Slike");
                 });
 
             modelBuilder.Entity("Bookly.Domain.Entiteti.Korisnik", b =>
@@ -83,6 +104,71 @@ namespace Bookly.Infrastructure.Persistence.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("Kornisici");
+                });
+
+            modelBuilder.Entity("Bookly.Domain.Entiteti.Rezervacija", b =>
+                {
+                    b.Property<Guid>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ApartmanID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("DatumDolaska")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DatumOdlaska")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("KorisnikID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("ApartmanID");
+
+                    b.HasIndex("KorisnikID");
+
+                    b.ToTable("Rezervacije");
+                });
+
+            modelBuilder.Entity("Bookly.Domain.Entiteti.Bazni.Slike", b =>
+                {
+                    b.HasOne("Bookly.Domain.Entiteti.Apartman", null)
+                        .WithMany("Slike")
+                        .HasForeignKey("ApartmanID");
+                });
+
+            modelBuilder.Entity("Bookly.Domain.Entiteti.Rezervacija", b =>
+                {
+                    b.HasOne("Bookly.Domain.Entiteti.Apartman", "Apartman")
+                        .WithMany("Rezervacije")
+                        .HasForeignKey("ApartmanID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Bookly.Domain.Entiteti.Korisnik", "Korisnik")
+                        .WithMany("Rezervacije")
+                        .HasForeignKey("KorisnikID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Apartman");
+
+                    b.Navigation("Korisnik");
+                });
+
+            modelBuilder.Entity("Bookly.Domain.Entiteti.Apartman", b =>
+                {
+                    b.Navigation("Rezervacije");
+
+                    b.Navigation("Slike");
+                });
+
+            modelBuilder.Entity("Bookly.Domain.Entiteti.Korisnik", b =>
+                {
+                    b.Navigation("Rezervacije");
                 });
 #pragma warning restore 612, 618
         }

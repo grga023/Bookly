@@ -7,25 +7,23 @@ using Bookly.Domain.Entiteti;
 
 namespace Bookly.API.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class SmestajController : ControllerBase
+    public class SmestajController : BaseController
     {
         private readonly SmestajServis _smestajServis;
         public SmestajController(SmestajServis smestajServis)
         {
             _smestajServis = smestajServis;
         }
-        [HttpPost("dodavanje-smesaja")]
+        [HttpPost]
         public async Task DodavanjeSmestaja(NoviSmestajDTO noviSmestaj) =>
             await _smestajServis.DodavanjeSmestajaAsync(noviSmestaj);
 
-        [HttpGet("prikaz-svih-smestaja")]
-        public async Task<List<Apartman>> GetAllSmestajiAsync() =>
+        [HttpGet]
+        public async Task<List<PrikazSmestajaDTO>> GetAllSmestajiAsync() =>
             await _smestajServis.PrikazSvihSmestaja();
 
-        [HttpGet("prikaz-smestaja-po-id")]
-        public async Task<Apartman> GetAllSmestajiPoIDAsync(Guid id) =>
+        [HttpGet("{id}")]
+        public async Task<PrikazSmestajaDTO> GetAllSmestajiPoIDAsync(Guid id) =>
             await _smestajServis.PrikazSvihSmestajaPoId(id);
     }
 }
