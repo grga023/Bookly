@@ -23,5 +23,12 @@ namespace Bookly.API.Controllers
         public async Task<List<DateOnly>> DobaviListuZauzetihDatuma(Guid apartmanId) => 
             await _rezervacijaServis.DobaviSveZauzeteDatumeAsync(apartmanId);
 
+        [HttpPut("odobri-rezervaciju/{id}")]
+        public async Task OdobriRezervacijuAsync(Guid id) =>
+            await _rezervacijaServis.PromeniStatusRezervacijeAsync(id, Domain.Entiteti.StatusRezervacije.Odobrena);
+
+        [HttpPut("odbij-rezervaciju/{id}")]
+        public async Task OdbijRezervacijuAsync(Guid id) =>
+            await _rezervacijaServis.PromeniStatusRezervacijeAsync(id, Domain.Entiteti.StatusRezervacije.Odbijena);
     }
 }
