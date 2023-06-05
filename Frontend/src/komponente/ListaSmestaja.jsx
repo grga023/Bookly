@@ -7,7 +7,7 @@ const formatirajOcenu = (ocena) => {
   return ceoBroj ? parsedOcena.toString() : parsedOcena.toFixed(1);
 }
 
-export default function ListaSmestaja({ id, slika, naziv, opis, mesto, drzava, cena, ocena }) {
+export default function ListaSmestaja({ id, slike, naziv, opis, mesto, drzava, cena, ocena }) {
   const mestoDrzava = `${mesto}, ${drzava}`;
   const kratakOpis = opis.slice(0, 120) + '...';
   const formatiranaOcena = formatirajOcenu(ocena);
@@ -15,7 +15,7 @@ export default function ListaSmestaja({ id, slika, naziv, opis, mesto, drzava, c
   return (
     <Link to={`/smestaj/${id}`} key={id} className="rounded-2xl shadow-md overflow-hidden cursor-pointer">
       <div className="w-full group overflow-hidden">
-        <img src={slika} alt={naziv} className="object-cover group-hover:scale-[1.05] transition-all duration-500" />
+        <img src={slike[0].url} alt={slike[0].alt} className="object-cover group-hover:scale-[1.05] transition-all duration-500" />
       </div>
       <div className="p-4">
         <div className="flex justify-between items-centar">
