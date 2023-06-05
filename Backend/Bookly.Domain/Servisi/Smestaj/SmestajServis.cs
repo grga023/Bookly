@@ -18,7 +18,7 @@ namespace Bookly.Domain.Servisi.Smestaj
         {
             _aplikacioniDbContext = aplikacioniDbContext;
         }
-        
+
         public async Task DodavanjeSmestajaAsync(NoviSmestajDTO noviSmestaj)
         {
             Guid noviApartmanId = Guid.NewGuid();
@@ -26,18 +26,67 @@ namespace Bookly.Domain.Servisi.Smestaj
                                                        naziv: noviSmestaj.Naziv,
                                                        mesto: noviSmestaj.Mesto,
                                                        drzava: noviSmestaj.Drzava,
-                                                       cena: noviSmestaj.Cena,
                                                        ocena: noviSmestaj.Ocena,
-                                                       opis: noviSmestaj.Opis);
+                                                       opis: noviSmestaj.Opis,
+                                                       slike: noviSmestaj.Slike);
 
             _aplikacioniDbContext.Apartmani.Add(apartmanZaDodati);
             await _aplikacioniDbContext.SaveChangesAsync();
         }
 
-        public async Task<List<Apartman>> PrikazSvihSmestaja() =>
-            await _aplikacioniDbContext.Apartmani.ToListAsync();
+        public async Task<List<PrikazSmestajaDTO>> PrikazSvihSmestaja()
+        {
+            var apartmani = await _aplikacioniDbContext.Apartmani.ToListAsync();
 
-        public async Task<Apartman> PrikazSvihSmestajaPoId(Guid id) =>
-            await _aplikacioniDbContext.Apartmani.FindAsync(id);
+
+            List<PrikazSmestajaDTO> lista = new();
+
+            foreach (var apartman in apartmani)
+            {
+                if (apartman != null)
+                {
+                    apartman.Slike = await _aplikacioniDbContext.Slike
+                        .Where(s => s.ApartmanID == apartman.ID).ToListAsync();
+                }
+
+                PrikazSmestajaDTO prikazDTO = new()
+                {
+                    Naziv = apartman.Naziv,
+                    Mesto = apartman.Mesto,
+                    Drzava = apartman.Drzava,
+                    Ocena = apartman.Ocena,
+                    Opis = apartman.Opis,
+                    SlikeURL = apartman.Slike.Select(s => s.Url).ToList()
+                };
+
+                lista.Add(prikazDTO);
+            }
+
+            return lista;
+
+        }
+
+        public async Task<PrikazSmestajaDTO> PrikazSvihSmestajaPoId(Guid id)
+        {
+            Apartman apartman = await _aplikacioniDbContext.Apartmani.FindAsync(id);
+
+            if (apartman != null)
+            {
+                apartman.Slike = await _aplikacioniDbContext.Slike
+                    .Where(s => s.ApartmanID == id).ToListAsync();
+            }
+
+            PrikazSmestajaDTO prikazDTO = new()
+            {
+                Naziv = apartman.Naziv,
+                Mesto = apartman.Mesto,
+                Drzava = apartman.Drzava,
+                Ocena = apartman.Ocena,
+                Opis = apartman.Opis,
+                SlikeURL = apartman.Slike.Select(s => s.Url).ToList()
+            };
+
+            return prikazDTO;
+        }
     }
 }

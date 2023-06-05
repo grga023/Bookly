@@ -20,11 +20,11 @@ namespace Bookly.API.Controllers
             await _smestajServis.DodavanjeSmestajaAsync(noviSmestaj);
 
         [HttpGet]
-        public async Task<List<Apartman>> GetAllSmestajiAsync() =>
+        public async Task<List<PrikazSmestajaDTO>> GetAllSmestajiAsync() =>
             await _smestajServis.PrikazSvihSmestaja();
 
         [HttpGet("{id}")]
-        public async Task<Apartman> GetAllSmestajiPoIDAsync(Guid id) =>
+        public async Task<PrikazSmestajaDTO> GetAllSmestajiPoIDAsync(Guid id) =>
             await _smestajServis.PrikazSvihSmestajaPoId(id);
     }
 }
