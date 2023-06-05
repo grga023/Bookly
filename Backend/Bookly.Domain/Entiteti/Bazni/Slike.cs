@@ -10,12 +10,11 @@ namespace Bookly.Domain.Entiteti.Bazni
     {
         public string Url { get; set; }
         public string Opis { get; set; }
-        public Guid ApartmanID { get; set; }
+        public Guid ApartmanID { get; private set; }
         public Slike(Guid id, string url, string opis) : base(id)
         {
             Url = url;
             Opis = opis;
-            ApartmanID = id;
         }
         public Slike() { }
     }
