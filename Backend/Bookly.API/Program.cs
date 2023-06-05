@@ -9,6 +9,7 @@ using Bookly.Infrastructure.Identity.Entiteti;
 using Bookly.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,7 +23,9 @@ builder.Services.AddDbContext<AplikacioniDbContext>(
 builder.Services.AddDbContext<IdentityDbContext>(
     opts => opts.UseSqlServer(connectionString: builder.Configuration.GetConnectionString("IdentityDb")));
 
+
 builder.Services.Configure<SmtpGoogleKonfiguracija>(builder.Configuration.GetSection("SmtpGoogleKonfiguracija"));
+
 
 builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
 {
@@ -72,11 +75,16 @@ builder.Services.AddScoped<KorisnikServis>();
 builder.Services.AddScoped<SmestajServis>();
 builder.Services.AddScoped<RezervacijaServis>();
 
+builder.Configuration.AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json").AddEnvironmentVariables();
+
+
 builder.Services.AddAuthorization();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+
 
 var app = builder.Build();
 
@@ -87,7 +95,20 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+if (app.Environment.IsStaging())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+    using (var scope = app.Services.CreateScope())
+    {
+        var aplikacioniDb = scope.ServiceProvider.GetRequiredService<AplikacioniDbContext>();
+        aplikacioniDb.Database.Migrate();
+        var identityDb = scope.ServiceProvider.GetRequiredService<IdentityDbContext>();
+        identityDb.Database.Migrate();
+    }
+}
+
+//app.UseHttpsRedirection();
 
 app.UseAuthentication();
 
