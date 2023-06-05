@@ -36,21 +36,21 @@ namespace Bookly.Domain.Servisi.Smestaj
 
         public async Task<List<PrikazSmestajaDTO>> PrikazSvihSmestaja()
         {
-            var apartmani = await _aplikacioniDbContext.Apartmani.ToListAsync();
+            List<Apartman> apartmani = await _aplikacioniDbContext.Apartmani.ToListAsync();
 
 
             List<PrikazSmestajaDTO> lista = new();
 
             foreach (var apartman in apartmani)
             {
-                if (apartman != null)
-                {
-                    apartman.Slike = await _aplikacioniDbContext.Slike
-                        .Where(s => s.ApartmanID == apartman.ID).ToListAsync();
-                }
 
+                apartman.Slike = await _aplikacioniDbContext.Slike
+                                                            .Where(s => s.ApartmanID == apartman.ID)
+                                                            .ToListAsync();
+                
                 PrikazSmestajaDTO prikazDTO = new()
                 {
+                    ID = apartman.ID,
                     Naziv = apartman.Naziv,
                     Mesto = apartman.Mesto,
                     Drzava = apartman.Drzava,
@@ -67,16 +67,15 @@ namespace Bookly.Domain.Servisi.Smestaj
 
         public async Task<PrikazSmestajaDTO> PrikazSvihSmestajaPoId(Guid id)
         {
-            Apartman apartman = await _aplikacioniDbContext.Apartmani.FindAsync(id);
-
-            if (apartman != null)
-            {
-                apartman.Slike = await _aplikacioniDbContext.Slike
-                    .Where(s => s.ApartmanID == id).ToListAsync();
-            }
+            Apartman? apartman = await _aplikacioniDbContext.Apartmani
+                                                            .Where(apt=>apt.ID == id)
+                                                            .Include(apt=>apt.Slike)
+                                                            .FirstOrDefaultAsync() ?? 
+                                                            throw new KeyNotFoundException("Apartman sa unetim ID-em ne postoji.");
 
             PrikazSmestajaDTO prikazDTO = new()
             {
+                ID = apartman.ID,
                 Naziv = apartman.Naziv,
                 Mesto = apartman.Mesto,
                 Drzava = apartman.Drzava,
