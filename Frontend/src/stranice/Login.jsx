@@ -1,11 +1,18 @@
 import { useState } from "react";
 
+import { validirajSifru } from "../funkcije";
+
 export default function Login() {
   const [email, postaviEmail] = useState("");
   const [sifra, postaviSifru] = useState("");
+  const [novaSifra, postaviNovuSifru] = useState("");
+  const [token, postaviToken] = useState('');
+  const [tokenError, postaviTokenError] = useState('');
   const [emailError, postaviEmailError] = useState('');
   const [sifraError, postaviSifraError] = useState('');
+  const [novaSifraError, postaviNovaSifraError] = useState('');
   const [formaValidna, postaviFormaValidna] = useState(false);
+  const [zaboravljenaSifraOdabrano, postaviZaboravljenaSifraOdabrano] = useState(false)
 
   const validirajFormu = () => {
     let validnaForma = true;
@@ -27,7 +34,7 @@ export default function Login() {
     return validnaForma;
   }
 
-  const submitovanjeForme = (e) => {
+  const logovanje = (e) => {
     e.preventDefault();
     postaviFormaValidna(validirajFormu());
 
@@ -36,10 +43,50 @@ export default function Login() {
     } else return;
   }
 
+  const validirajPromenuSifre = () => {
+    let validnaForma = true;
+
+    if (email.trim() === '') {
+      postaviEmailError('Polje "E-mail adresa" je obavezno');
+      validnaForma = false;
+    } else {
+      postaviEmailError('');
+    }
+
+    if (token.trim() === '') {
+      postaviTokenError('Polje "Token" je obavezno');
+      validnaForma = false;
+    } else {
+      postaviTokenError('');
+    }
+
+     if (novaSifra.trim() === '') {
+      postaviNovaSifraError('Polje "Nova šifra" je obavezno');
+      validnaForma = false;
+    } else if (!validirajSifru(novaSifra)){
+      postaviNovaSifraError('Šifra nije dovoljno jaka');
+      validnaForma = false;
+    } else {
+      postaviNovaSifraError('');
+    }
+
+    return validnaForma;
+  }
+
+  const promenaSifre = (e) => {
+    e.preventDefault();
+
+    const validnaForma = validirajPromenuSifre();
+
+    if(validnaForma){
+      console.log('validna')
+    } else return;
+  }
+
   return (
     <section className="grid" aria-label="Napravi novi profil na aplikaciji">
       <h1 className="mb-12 text-center">Uloguj se</h1>
-      <form className="container-form-mini mx-auto grid gap-4" onSubmit={submitovanjeForme} noValidate>
+      {!zaboravljenaSifraOdabrano && <form className="container-form-mini mx-auto grid gap-4" onSubmit={logovanje} noValidate>
         <div>
           <div className="flex items-center justify-between">
             <label htmlFor="email">Email adresa</label>
@@ -56,9 +103,35 @@ export default function Login() {
         </div>
         <div className="flex items-center justify-between">
           <button type="submit" className="btn btn-primary px-12">Uloguj se</button>
-          <button type="button" className="cursor-pointer text-primary hover:underline">Zaboravljena šifra?</button>
+          <button type="button" className="cursor-pointer text-primary hover:underline" onClick={() => postaviZaboravljenaSifraOdabrano(true)}>Zaboravljena šifra?</button>
         </div>
-      </form>
+      </form>}
+      {zaboravljenaSifraOdabrano && <form className="container-form-mini mx-auto grid gap-4" onSubmit={promenaSifre} noValidate>
+           <div>
+          <div className="flex items-center justify-between">
+            <label htmlFor="email">Email adresa</label>
+            <span className={`${emailError ? 'error error--aktivan' : 'error'}`}>{emailError}</span>
+          </div>
+          <input type="email" id="email" name="email" placeholder="petar.petrovic@gmail.com" value={email} onChange={(e) => postaviEmail(e.target.value)} className={`form-input ${emailError ? 'border-accent' : ''}`} />
+        </div>
+           <div>
+          <div className="flex items-center justify-between">
+            <label htmlFor="token">Token</label>
+            <span className={`${tokenError ? 'error error--aktivan' : 'error'}`}>{tokenError}</span>
+          </div>
+          <input type="text" id="token" name="token" placeholder="aieojda8931mcad" value={token} onChange={(e) => postaviToken(e.target.value)} className={`form-input ${tokenError ? 'border-accent' : ''}`} />
+        </div>
+        <div>
+          <div className="flex items-center justify-between">
+            <label htmlFor="novaSifra">Nova šifra</label>
+            <span className={`${novaSifraError ? 'error error--aktivan' : 'error'}`}>{novaSifraError}</span>
+          </div>
+          <input type="password" id="sifra" name="novaSifra" placeholder="s91D0?s90._a" value={novaSifra} onChange={(e) => postaviNovuSifru(e.target.value)} className={`form-input ${novaSifraError ? 'border-accent' : ''}`} />
+        </div>
+        <div className="flex items-center justify-between">
+          <button type="submit" className="btn btn-primary px-12">Promeni šifru</button>
+        </div>
+        </form>}
     </section>
   )
 }

@@ -1,5 +1,7 @@
 import { useState } from "react";
 
+import { validirajDatum, validirajMejl, validirajSifru } from "../funkcije";
+
 export default function Registracija() {
   const [izabraniDatum, postaviIzabraniDatum] = useState(new Date());
   const [ime, postaviIme] = useState("");
@@ -15,26 +17,6 @@ export default function Registracija() {
   const [sifraError, postaviSifraError] = useState('');
   const [adresaError, postaviAdresaError] = useState('');
   const [datumError, postaviDatumError] = useState('');
-
-  const validirajDatum = (datum) => {
-    const izabraniDatum = new Date(datum);
-    const danasnjiDatum = new Date();
-    const razlika = danasnjiDatum.getFullYear() - izabraniDatum.getFullYear();
-
-    return razlika >= 18;
-  }
-
-  const validirajSifru = (sifra) => {
-    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()\-_=+{};:,<.>])[a-zA-Z\d!@#$%^&*()\-_=+{};:,<.>]{8,}$/;
-
-    return regex.test(sifra);
-  }
-
-  const validirajMejl = (mejl) => {
-    const regex = /\S+@\S+\.\S+/;
-
-    return regex.test(mejl);
-  }
 
   const validirajFormu = () => {
     let validnaForma = true;
@@ -102,7 +84,7 @@ export default function Registracija() {
 
   return (
     <section className="grid h-full place-items-center" aria-label="Napravi novi profil na aplikaciji">
-      <h1>Registracija</h1>
+      <h1 className="mb-12">Registracija</h1>
       <form className="container-form grid grid-cols-6 gap-4" onSubmit={submitovanjeForme} noValidate>
         <div className="grid col-span-3">
           <div className="flex items-center justify-between">

@@ -13,7 +13,7 @@ export default function SmestajKartica({ id, slike, naziv, opis, mesto, drzava, 
     <Suspense fallback={<Ucitavanje />}>
       <Link to={`/smestaj/${id}`} key={id} className="rounded-2xl shadow-md overflow-hidden cursor-pointer">
         <div className="w-full group overflow-hidden">
-          <img src={slike[0].url} alt={slike[0].alt} className="object-cover group-hover:scale-[1.05] transition-all duration-500" />
+          <img src={slike[0]} alt={naziv} className="object-cover group-hover:scale-[1.05] transition-all duration-500" />
         </div>
         <div className="p-4">
           <div className="flex justify-between items-centar">
