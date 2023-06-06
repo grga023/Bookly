@@ -1,0 +1,26 @@
+# Use the official Node.js image
+FROM node:alpine
+
+# Set the working directory
+WORKDIR /app
+
+# Copy package.json and package-lock.json files
+COPY package*.json ./
+
+# Install dependencies
+RUN npm install
+
+# Copy the rest of the application code
+COPY . .
+
+# Build the app
+RUN npm run build
+
+# Install serve globally
+RUN npm install -g serve
+
+# Expose the application port
+EXPOSE 8000
+
+# Serve the built app
+CMD ["serve", "-s", "dist", "-l", "8000"]
