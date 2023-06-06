@@ -1,9 +1,10 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, Suspense } from "react";
 import Slider from "@mui/material/Slider";
 
 import filterImg from "../slike/filter.svg";
 import searchImg from "../slike/search.svg";
-import ListaSmestaja from "../komponente/ListaSmestaja";
+import SmestajKartica from "../komponente/SmestajKartica";
+import { brojKaoDinar } from "../funkcije";
 
 const smestajNiz = [
   {
@@ -145,6 +146,9 @@ export default function Home(){
     );
   }, [modifikovaniSmestajNiz, pretraga, filterCene]);
 
+  const najmanjaOdabranaCena = brojKaoDinar(filterCene[0]);
+  const najvecaOdabranaCena = brojKaoDinar(filterCene[1]);
+
   return (
       <section aria-label="Pocetna sekcija, filtriranje smestaja">
         <div className="flex gap-6 items-center justify-between mb-4">
@@ -155,7 +159,7 @@ export default function Home(){
             </div>
             <div className="my-2">
               <Slider value={filterCene} onChange={(_, novaVrednost) => postaviFilterCene(novaVrednost) } min={najmanjaCena} max={najvecaCena} valueLabelDisplay="auto" className="relative z-30"/>
-              <span>Odabrana cena je: {filterCene[0]} do {filterCene[1]}</span>
+              <span>{najmanjaOdabranaCena} do {najvecaOdabranaCena}</span>
              </div>
           </div>
            <div className="w-full mb-12 relative px-4 py-2 border-2 rounded-xl focus-within:border-primary-200 transition-colors duration-300">
@@ -163,11 +167,13 @@ export default function Home(){
              <input type="text" placeholder="Pretraži smeštaj" className="pl-8 w-full" value={pretraga} onChange={(e) => postaviPretragu(e.target.value)} />
            </div>
         </div>
-        {filtriraniSmestaj.length > 0 && <ul className="grid grid-cols-3 gap-6">
-          {filtriraniSmestaj.map(smestaj => (
-            <ListaSmestaja key={smestaj.id} id={smestaj.id} naziv={smestaj.naziv} cena={smestaj.cena} ocena={smestaj.ocena} slike={smestaj.slike} mesto={smestaj.mesto} drzava={smestaj.drzava} opis={smestaj.opis} />
-          ))}
-        </ul>}
+        {filtriraniSmestaj.length > 0 && <Suspense fallback={<div>loading</div>}>
+          <ul className="grid grid-cols-3 gap-6">
+            {filtriraniSmestaj.map(smestaj => (
+                <SmestajKartica key={smestaj.id} id={smestaj.id} naziv={smestaj.naziv} cena={smestaj.cena} ocena={smestaj.ocena} slike={smestaj.slike} mesto={smestaj.mesto} drzava={smestaj.drzava} opis={smestaj.opis} />
+            ))}
+          </ul>
+        </Suspense>}
         {filtriraniSmestaj.length === 0 && <p className="text-medium text-center pt-10 text-xl">Žao nam je, ali za odabrane kriterijume nema reultata.</p>}
       </section>
   )
