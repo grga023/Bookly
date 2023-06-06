@@ -102,7 +102,7 @@ export default function Registracija() {
 
   return (
     <section className="grid h-full place-items-center" aria-label="Napravi novi profil na aplikaciji">
-      <h1 className="mb-6">Registracija</h1>
+      <h1>Registracija</h1>
       <form className="container-form grid grid-cols-6 gap-4" onSubmit={submitovanjeForme} noValidate>
         <div className="grid col-span-3">
           <div className="flex items-center justify-between">

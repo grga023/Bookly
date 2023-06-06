@@ -5,7 +5,7 @@
 
 @layer base {
   html {
-    font-family: "Poppins", sans-serif;
+    font-family:"Poppins", sans-serif;
   }
 
   body,
@@ -77,5 +77,9 @@
 
   .container-form {
     width: min(640px, 95%);
+  }
+
+  .container-form-mini {
+    width :min(440px, 95%);
   }
 }
