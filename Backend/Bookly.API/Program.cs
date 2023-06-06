@@ -64,7 +64,17 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.Cookie = cookie;
 });
 
-
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("MyAllowSpecificOrigins",
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:8000", "https://localhost:8000")
+            .AllowCredentials()
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+        });
+});
 
 
 builder.Services.AddScoped<IAplikacioniDbContext>(sp => sp.GetRequiredService<AplikacioniDbContext>());
@@ -109,6 +119,7 @@ if (app.Environment.IsStaging())
 }
 
 //app.UseHttpsRedirection();
+app.UseCors("MyAllowSpecificOrigins");
 
 app.UseAuthentication();
 
