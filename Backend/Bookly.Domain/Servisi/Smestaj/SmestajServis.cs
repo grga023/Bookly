@@ -26,6 +26,7 @@ namespace Bookly.Domain.Servisi.Smestaj
                                                        naziv: noviSmestaj.Naziv,
                                                        mesto: noviSmestaj.Mesto,
                                                        drzava: noviSmestaj.Drzava,
+                                                       cena : noviSmestaj.Cena,
                                                        ocena: noviSmestaj.Ocena,
                                                        opis: noviSmestaj.Opis,
                                                        slike: noviSmestaj.Slike);
@@ -54,6 +55,7 @@ namespace Bookly.Domain.Servisi.Smestaj
                     Naziv = apartman.Naziv,
                     Mesto = apartman.Mesto,
                     Drzava = apartman.Drzava,
+                    Cena = apartman.Cena,
                     Ocena = apartman.Ocena,
                     Opis = apartman.Opis,
                     SlikeURL = apartman.Slike.Select(s => s.Url).ToList()

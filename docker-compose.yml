@@ -1,5 +1,14 @@
 version: '3.4'
 services:
+  bookly-client:
+    image: bookly-client
+    build:
+      context: .
+      dockerfile: Frontend/Dockerfile.dev
+    ports:
+      - 8000:8000
+    tty: true
+
   booklyapi:
     image: bookly-api
     ports:

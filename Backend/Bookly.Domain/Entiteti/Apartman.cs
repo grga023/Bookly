@@ -1,6 +1,6 @@
 ﻿using Bookly.Domain.Ekstenzije;
 using Bookly.Domain.Entiteti.Bazni;
-using System.Net;
+using System.Text;
 
 namespace Bookly.Domain.Entiteti
 {
@@ -10,15 +10,17 @@ namespace Bookly.Domain.Entiteti
         public string Mesto { get; private set; }
         public string Drzava { get; private set; }
         public double Ocena { get; private set; }
+        public decimal Cena { get; set; }
         public string Opis { get; private set; }
         public List<Slike> Slike { get; set; } = new();
         public List<Rezervacija> Rezervacije { get; set; } = new();
 
-        public Apartman(Guid id, string naziv, string mesto, string drzava, double ocena, string opis, List<Slike> slike) : base(id)
+        public Apartman(Guid id, string naziv, string mesto, string drzava, decimal cena, double ocena, string opis, List<Slike> slike) : base(id)
         {
             Naziv = naziv;
             Mesto = mesto;
             Drzava = drzava;
+            Cena = cena;
             Ocena = ocena;
             Opis = opis;
             Slike = slike;
