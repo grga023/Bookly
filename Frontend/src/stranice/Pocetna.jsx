@@ -1,4 +1,4 @@
-import { useState, useMemo, Suspense } from "react";
+import { useState, useMemo, Suspense, useEffect } from "react";
 import Slider from "@mui/material/Slider";
 
 import filterImg from "../slike/filter.svg";
@@ -6,145 +6,68 @@ import searchImg from "../slike/search.svg";
 import SmestajKartica from "../komponente/SmestajKartica";
 import { brojKaoDinar } from "../funkcije";
 
-const smestajNiz = [
-  {
-    id: 1,
-    naziv: 'Fruske Terme',
-    mesto: 'Vrdnik',
-    drzava: 'Srbija',
-    cena: '2990',
-    ocena: '7.3',
-    opis: 'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source.',
-    slike: [{
-     url: 'https://images.pexels.com/photos/2844474/pexels-photo-2844474.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-     alt: 'Gotiona Babin zub smestaj'
-    }, ]
-  },
-  {
-    id: 2,
-    naziv: 'Ramonda',
-    mesto: 'Rtanj',
-    drzava: 'Srbija',
-    cena: '5390',
-    ocena: '9.5',
-    opis: 'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source.',
-    slike: [{
-     url: 'https://images.pexels.com/photos/2844474/pexels-photo-2844474.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-     alt: 'Gotiona Babin zub smestaj'
-    }, ]
-  },
-  {
-    id: 3,
-    naziv: 'Hotel Mir',
-    mesto: 'Lovcen',
-    drzava: 'Crna Gora',
-    cena: '3190',
-    ocena: '6.6',
-    opis: 'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source.',
-    slike: [{
-     url: 'https://images.pexels.com/photos/2844474/pexels-photo-2844474.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-     alt: 'Gotiona Babin zub smestaj'
-    }, ]
-  },
-  {
-    id: 4,
-    naziv: 'Fruske Terme',
-    mesto: 'Vrdnik',
-    drzava: 'Srbija',
-    cena: '2990',
-    ocena: '7.3',
-    opis: 'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source.',
-    slike: [{
-     url: 'https://images.pexels.com/photos/2844474/pexels-photo-2844474.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-     alt: 'Gotiona Babin zub smestaj'
-    }, ]
-  },
-  {
-    id: 5,
-    naziv: 'Ohridska dolina',
-    mesto: 'Ohrid',
-    drzava: 'Makedonija',
-    cena: '1990',
-    ocena: '4.8',
-    opis: 'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source.',
-    slike: [{
-     url: 'https://images.pexels.com/photos/2844474/pexels-photo-2844474.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-     alt: 'Gotiona Babin zub smestaj'
-    }, ]
-  },
-  {
-    id: 6,
-    naziv: 'Botev Peak Hotel',
-    mesto: 'Stara planina',
-    drzava: 'Srbija',
-    cena: '9440',
-    ocena: '8.8',
-    opis: 'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source.',
-    slike: [{
-     url: 'https://images.pexels.com/photos/2844474/pexels-photo-2844474.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-     alt: 'Gotiona Babin zub smestaj'
-    }, ]
-  },
-  {
-    id: 7,
-    naziv: 'Zepter Hotel',
-    mesto: 'Vrnjacka Banja',
-    drzava: 'Srbija',
-    cena: '1590',
-    ocena: '10',
-    opis: 'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source.',
-    slike: [{
-     url: 'https://images.pexels.com/photos/2844474/pexels-photo-2844474.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-     alt: 'Gotiona Babin zub smestaj'
-    }, ]
-  },
-  {
-    id: 8,
-    naziv: 'Oplenac',
-    mesto: 'Gostiona Babin zub',
-    drzava: 'Srbija',
-    cena: '3000',
-    ocena: '2.3',
-    opis: 'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source.',
-    slike: [{
-     url: 'https://images.pexels.com/photos/2844474/pexels-photo-2844474.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-     alt: 'Gotiona Babin zub smestaj'
-    }, ]
-  },
-]
-
 export default function Home(){
   const [pretraga, postaviPretragu] = useState("");
+  const [smestajNiz, postaviSmestajNiz] = useState([]);
+
+  useEffect(() => {
+    const dobijanjeSmestaja = async () => {
+      try {
+        const odgovor = await fetch("http://localhost:4300/api/Smestaj");
+        const podaci = await odgovor.json();
+        postaviSmestajNiz(podaci);
+      } catch (error) {
+        console.error("Greska prilikom dobijanja podataka:", error);
+      }
+    };
+
+    dobijanjeSmestaja();
+  }, []);
 
   const modifikovaniSmestajNiz = useMemo(() => {
+    if (smestajNiz.length === 0) return [];
+
     return smestajNiz.map(smestaj => {
       return {
         ...smestaj,
-        mestoDrzava: `${smestaj.mesto}, ${smestaj.drzava}` 
+        mestoDrzava: `${smestaj.mesto}, ${smestaj.drzava}`
       };
     });
-  }, []);
+  }, [smestajNiz]);
 
-  const cene = useMemo(() => {
-    return smestajNiz.map(smestaj => smestaj.cena);
+   const cene = useMemo(() => {
+    if (smestajNiz.length === 0) return [];
+
+    return smestajNiz.map((smestaj) => smestaj.cena);
   }, [smestajNiz]);
 
   const [najmanjaCena, najvecaCena] = useMemo(() => {
+    if (cene.length === 0) return [0, 0];
+
     const min = cene.reduce((min, cena) => Math.min(min, cena));
     const max = cene.reduce((max, cena) => Math.max(max, cena));
     return [min, max];
   }, [cene]);
 
-  const [filterCene, postaviFilterCene] = useState([najmanjaCena, najvecaCena]);
+
+  const [filterCene, postaviFilterCene] = useState([]);
+  useEffect(() => {
+    postaviFilterCene([najmanjaCena, najvecaCena]);
+  }, [najmanjaCena, najvecaCena]);
 
   const filtriraniSmestaj = useMemo(() => {
-    return modifikovaniSmestajNiz.filter(smestaj =>
-      (smestaj.mestoDrzava.toLowerCase().includes(pretraga.toLowerCase()) ||
-      smestaj.naziv.toLowerCase().includes(pretraga.toLowerCase())) &&
-      parseInt(smestaj.cena) >= filterCene[0] &&
-      parseInt(smestaj.cena) <= filterCene[1]
-    );
-  }, [modifikovaniSmestajNiz, pretraga, filterCene]);
+    if (modifikovaniSmestajNiz.length === 0) return [];
+
+    return modifikovaniSmestajNiz.filter((smestaj) => {
+      const cena = parseInt(smestaj.cena);
+      return (
+        (smestaj.mestoDrzava.toLowerCase().includes(pretraga.toLowerCase()) ||
+          smestaj.naziv.toLowerCase().includes(pretraga.toLowerCase())) &&
+        cena >= filterCene[0] &&
+        cena <= filterCene[1]
+      );
+    });
+}, [modifikovaniSmestajNiz, pretraga, filterCene]);
 
   const najmanjaOdabranaCena = brojKaoDinar(filterCene[0]);
   const najvecaOdabranaCena = brojKaoDinar(filterCene[1]);
@@ -170,7 +93,7 @@ export default function Home(){
         {filtriraniSmestaj.length > 0 && <Suspense fallback={<div>loading</div>}>
           <ul className="grid grid-cols-3 gap-6">
             {filtriraniSmestaj.map(smestaj => (
-                <SmestajKartica key={smestaj.id} id={smestaj.id} naziv={smestaj.naziv} cena={smestaj.cena} ocena={smestaj.ocena} slike={smestaj.slike} mesto={smestaj.mesto} drzava={smestaj.drzava} opis={smestaj.opis} />
+                <SmestajKartica key={smestaj.id} id={smestaj.id} naziv={smestaj.naziv} cena={smestaj.cena} ocena={smestaj.ocena} slike={smestaj.slikeURL} mesto={smestaj.mesto} drzava={smestaj.drzava} opis={smestaj.opis} />
             ))}
           </ul>
         </Suspense>}
