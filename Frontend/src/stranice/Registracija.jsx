@@ -74,8 +74,8 @@ export default function Registracija() {
   }
 
   async function registrujKorisnika(korisnik){
+    postaviRegistrovanje(true);
     try {
-      postaviRegistrovanje(true);
       const response = await fetch("http://localhost:4300/api/Korisnici/registracija", {
         method: "POST",
         headers: {
@@ -95,11 +95,12 @@ export default function Registracija() {
       postaviIzabraniDatum("");
       postaviAdresu("");
       postaviEmail("");
-
-      postaviRegistrovanje(false);
+      
     } catch (error) {
+      postaviEmailError("Ovaj email je vec u upotrebi.")
       console.log(error)
     }
+    postaviRegistrovanje(false);
   }
 
   const submitovanjeForme = (e) => {
