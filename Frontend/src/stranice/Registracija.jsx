@@ -3,13 +3,13 @@ import { useState } from "react";
 import { validirajDatum, validirajMejl, validirajSifru } from "../funkcije";
 
 export default function Registracija() {
-  const [izabraniDatum, postaviIzabraniDatum] = useState(new Date());
+  const [izabraniDatum, postaviIzabraniDatum] = useState("");
   const [ime, postaviIme] = useState("");
   const [prezime, postaviPrezime] = useState("");
   const [email, postaviEmail] = useState("");
   const [adresa, postaviAdresu] = useState("");
   const [sifra, postaviSifru] = useState("");
-  const [formaValidna, postaviFormaValidna] = useState(false);
+  const [registrovanje, postaviRegistrovanje] = useState(false);
 
   const [imeError, postaviImeError] = useState('');
   const [prezimeError, postaviPrezimeError] = useState('');
@@ -73,13 +73,50 @@ export default function Registracija() {
     return validnaForma;
   }
 
+  async function registrujKorisnika(korisnik){
+    postaviRegistrovanje(true);
+    
+    try {
+      const response = await fetch("http://localhost:4300/api/Korisnici/registracija", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(korisnik)
+      })
+
+      if(!response.ok){
+        throw new Error("Ovaj email je već u upotrebi");
+      }
+
+      postaviIme("");
+      postaviPrezime("");
+      postaviSifru("");
+      postaviIzabraniDatum("");
+      postaviAdresu("");
+      postaviEmail("");
+      
+    } catch (error) {
+      postaviEmailError("Ovaj email je već u upotrebi");
+    }
+
+    postaviRegistrovanje(false);
+  }
+
   const submitovanjeForme = (e) => {
     e.preventDefault();
-    postaviFormaValidna(validirajFormu());
-
-    if(formaValidna){
-      console.log('validna')
-    } else return;
+    const validnaForma = validirajFormu();
+    const korisnik = {
+      ime,
+      prezime,
+      adresa,
+      email,
+      password: sifra,
+      datumRodjenja: izabraniDatum
+    }
+      
+    validnaForma && registrujKorisnika(korisnik);
   }
 
   return (
@@ -128,7 +165,7 @@ export default function Registracija() {
           </div>
           <input type="date" name="datumRodjenja" id="datumRodjenja" value={izabraniDatum} onChange={(e) => postaviIzabraniDatum(e.target.value)} className={`form-input ${datumError ? 'border-accent' : ''}`} />
         </div>
-        <button type="submit" className="btn btn-primary col-span-2">Registruj se</button>
+        <button type="submit" className="btn btn-primary col-span-2">{registrovanje ? "Registracija..." : "Registruj se"}</button>
       </form>
     </section>
   )

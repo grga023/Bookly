@@ -11,8 +11,8 @@ export default function Login() {
   const [emailError, postaviEmailError] = useState('');
   const [sifraError, postaviSifraError] = useState('');
   const [novaSifraError, postaviNovaSifraError] = useState('');
-  const [formaValidna, postaviFormaValidna] = useState(false);
   const [zaboravljenaSifraOdabrano, postaviZaboravljenaSifraOdabrano] = useState(false)
+  const [logovanjeKorisnika, postaviLogovanje] = useState(false);
 
   const validirajFormu = () => {
     let validnaForma = true;
@@ -32,15 +32,6 @@ export default function Login() {
     }
 
     return validnaForma;
-  }
-
-  const logovanje = (e) => {
-    e.preventDefault();
-    postaviFormaValidna(validirajFormu());
-
-    if(formaValidna){
-      console.log('logged in')
-    } else return;
   }
 
   const validirajPromenuSifre = () => {
@@ -73,6 +64,44 @@ export default function Login() {
     return validnaForma;
   }
 
+  async function ulogujKorisnika(korisnik){
+    postaviLogovanje(true);
+
+    try {
+      const response = await fetch("http://localhost:4300/api/Korisnici/login", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(korisnik)
+      })
+
+      if(!response.ok){
+        throw new Error("Šifra nija tačna");
+      }
+
+      postaviEmail("");
+      postaviSifru("");
+
+    } catch (error) {
+      postaviSifraError(error)
+    }
+    
+    postaviLogovanje(false);
+  }
+
+  const logovanje = (e) => {
+    e.preventDefault();
+    const validnaForma = validirajFormu();
+    const korisnik = {
+      email,
+      password: sifra
+    }
+      
+    validnaForma && ulogujKorisnika(korisnik);
+  }
+
   const promenaSifre = (e) => {
     e.preventDefault();
 
@@ -102,7 +131,7 @@ export default function Login() {
           <input type="password" id="sifra" name="sifra" placeholder="s91D0?s90._a" value={sifra} onChange={(e) => postaviSifru(e.target.value)} className={`form-input ${sifraError ? 'border-accent' : ''}`} />
         </div>
         <div className="flex items-center justify-between">
-          <button type="submit" className="btn btn-primary px-12">Uloguj se</button>
+          <button type="submit" className="btn btn-primary px-12">{logovanjeKorisnika ? "Logovanje..." : "Uloguj se"}</button>
           <button type="button" className="cursor-pointer text-primary hover:underline" onClick={() => postaviZaboravljenaSifraOdabrano(true)}>Zaboravljena šifra?</button>
         </div>
       </form>}
