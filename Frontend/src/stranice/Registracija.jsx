@@ -75,6 +75,7 @@ export default function Registracija() {
 
   async function registrujKorisnika(korisnik){
     postaviRegistrovanje(true);
+    
     try {
       const response = await fetch("http://localhost:4300/api/Korisnici/registracija", {
         method: "POST",
@@ -86,7 +87,7 @@ export default function Registracija() {
       })
 
       if(!response.ok){
-        throw new Error("Doslo je do greske");
+        throw new Error("Ovaj email je već u upotrebi");
       }
 
       postaviIme("");
@@ -97,9 +98,9 @@ export default function Registracija() {
       postaviEmail("");
       
     } catch (error) {
-      postaviEmailError("Ovaj email je vec u upotrebi.")
-      console.log(error)
+      postaviEmailError("Ovaj email je već u upotrebi");
     }
+
     postaviRegistrovanje(false);
   }
 
