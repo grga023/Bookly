@@ -70,8 +70,9 @@ export default function Login() {
     try {
       const response = await fetch("http://localhost:4300/api/Korisnici/login", {
         method: "POST",
+        credentials: "include",
         headers: {
-          Accept: "application/json",
+          "Accept": "*/*",
           "Content-Type": "application/json"
         },
         body: JSON.stringify(korisnik)
