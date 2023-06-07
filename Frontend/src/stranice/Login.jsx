@@ -68,7 +68,7 @@ export default function Login() {
     postaviLogovanje(true);
 
     try {
-      const response = await fetch("http://localhost:4300/api/Korisnici/login", {
+      const odgovor = await fetch("http://localhost:4300/api/Korisnici/login", {
         method: "POST",
         credentials: "include",
         headers: {
@@ -78,7 +78,7 @@ export default function Login() {
         body: JSON.stringify(korisnik)
       })
 
-      if(!response.ok){
+      if(!odgovor.ok){
         throw new Error("Šifra nija tačna");
       }
 
