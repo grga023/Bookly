@@ -1,7 +1,5 @@
 import { Link } from "react-router-dom";
 import { brojKaoDinar, formatirajOcenu } from "../funkcije";
-import { Suspense } from "react";
-import Ucitavanje from "./Ucitavanje";
 
 export default function SmestajKartica({ id, slike, naziv, opis, mesto, drzava, cena, ocena }) {
   const mestoDrzava = `${mesto}, ${drzava}`;
@@ -10,9 +8,8 @@ export default function SmestajKartica({ id, slike, naziv, opis, mesto, drzava, 
   const cenaNocenja = brojKaoDinar(cena);
 
   return (
-    <Suspense fallback={<Ucitavanje />}>
-      <Link to={`/smestaj/${id}`} key={id} className="rounded-2xl shadow-md overflow-hidden cursor-pointer">
-        <div className="w-full group overflow-hidden">
+      <Link to={`/smestaj/${id}`} key={id} className="h-96 group rounded-2xl shadow-md overflow-hidden cursor-pointer">
+        <div className="h-48 w-full overflow-hidden">
           <img src={slike[0]} alt={naziv} className="object-cover group-hover:scale-[1.05] transition-all duration-500" />
         </div>
         <div className="p-4">
@@ -29,6 +26,5 @@ export default function SmestajKartica({ id, slike, naziv, opis, mesto, drzava, 
           </div>
         </div>
       </Link>
-    </Suspense>
   )
 }

@@ -90,14 +90,14 @@ export default function Home(){
              <input type="text" placeholder="Pretraži smeštaj" className="pl-8 w-full" value={pretraga} onChange={(e) => postaviPretragu(e.target.value)} />
            </div>
         </div>
-        {filtriraniSmestaj.length > 0 && <Suspense fallback={<div>loading</div>}>
+        {filtriraniSmestaj.length > 0 &&
           <ul className="grid grid-cols-3 gap-6">
             {filtriraniSmestaj.map(smestaj => (
                 <SmestajKartica key={smestaj.id} id={smestaj.id} naziv={smestaj.naziv} cena={smestaj.cena} ocena={smestaj.ocena} slike={smestaj.slikeURL} mesto={smestaj.mesto} drzava={smestaj.drzava} opis={smestaj.opis} />
             ))}
           </ul>
-        </Suspense>}
-        {filtriraniSmestaj.length === 0 && <p className="text-medium text-center pt-10 text-xl">Žao nam je, ali za odabrane kriterijume nema reultata.</p>}
+        }
+        {filtriraniSmestaj.length === 0 && smestajNiz.length > 0 && <p className="text-medium text-center pt-10 text-xl">Žao nam je, ali za odabrane kriterijume nema rezultata.</p>}
       </section>
   )
 }
