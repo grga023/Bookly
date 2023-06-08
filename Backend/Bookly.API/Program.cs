@@ -55,6 +55,19 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.Events.OnRedirectToLogin = (context) =>
     {
         context.Response.StatusCode = 401;
+        context.Response.Cookies.Append("isGuest", "true");
+        return Task.CompletedTask;
+    };
+
+    options.Events.OnSignedIn = (context) =>
+    {
+        context.Response.Cookies.Append("isGuest","false");
+        return Task.CompletedTask;
+    };
+
+    options.Events.OnSigningOut = (context) =>
+    {
+        context.Response.Cookies.Append("isGuest", "true");
         return Task.CompletedTask;
     };
 
