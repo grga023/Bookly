@@ -2,6 +2,7 @@
 using Bookly.Domain.Apstrakcije.Baza;
 using Bookly.Domain.Entiteti;
 using Bookly.Domain.Servisi.Korisnik.DTO;
+using System.Reflection.Metadata.Ecma335;
 using Entiteti = Bookly.Domain.Entiteti; 
 
 namespace Bookly.Domain.Servisi.Korisnik;
@@ -63,4 +64,7 @@ public class KorisnikServis
 
         await _aplikacioniDbContext.SaveChangesAsync();
     }
+
+    public async Task<Entiteti.Korisnik> DobaviKorisnikaPoId(Guid korisnikId) =>
+        await _aplikacioniDbContext.Kornisici.FindAsync(korisnikId) ?? throw new KeyNotFoundException($"Korisnik sa ID-em: {korisnikId} ne postoji!");
 }
