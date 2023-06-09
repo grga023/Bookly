@@ -10,13 +10,14 @@ const izracunajBrojNocenja = (datumPrijave, datumOdjave) => {
   const odjava = new Date(datumOdjave);
   const razlika = Math.abs(odjava - prijava);
   const brojNocenja = Math.ceil(razlika / (1000 * 60 * 60 * 24));
-
+  
   return brojNocenja;
 }
 
 export default function Smestaj() {
   const [datumPrijave, postaviDatumPrijave] = useState('');
   const [datumOdjave, postaviDatumOdjave] = useState('');
+  const [datumError, postaviDatumError] = useState(false);
   const { id } = useParams();
   const [smestaj, setSmestaj] = useState(null);
   const ctx = useContext(AuthContext);
@@ -38,8 +39,10 @@ export default function Smestaj() {
   const napraviRezervaciju = async (e) => {
     e.preventDefault();
 
+    const url = `http://localhost:4300/api/Rezervacije?apartmanId=${id}&datumDolaska=${datumPrijave}&datumOdlaska=${datumOdjave}`;
+
     try {
-      const odgovor = await fetch("http://localhost:4300/api/Rezervacije", {
+      const odgovor = await fetch(url, {
         method: "POST",
         credentials: "include",
         headers: {
@@ -53,16 +56,13 @@ export default function Smestaj() {
         })
       });
 
-      if(!odgovor.ok){
-        throw new Error("Registracija nije uspesna");
-      }
 
-      alert("Uspesno ste izvrsili registraciju!")
+      alert("Uspesno ste izvrsili rezervaciju!")
       postaviDatumOdjave("");
       postaviDatumPrijave("");
 
     } catch (error) {
-      console.log(error);
+      postaviDatumError(true);
     }
   }
 
@@ -92,13 +92,13 @@ export default function Smestaj() {
                 <div className="flex items-center justify-between">
                   <label htmlFor="datumPrijave">Datum prijave</label>
                 </div>
-                <input type="date" name="datumPrijave" id="datumPrijave" value={datumPrijave} min={minDatumPrijave} onChange={(e) => postaviDatumPrijave(e.target.value)} className='form-input' />
+                <input type="date" name="datumPrijave" id="datumPrijave" className={`form-input ${datumError ? 'border-accent' : ''}`} value={datumPrijave} min={minDatumPrijave} onChange={(e) => postaviDatumPrijave(e.target.value)} />
               </div>
               <div>
                 <div className="flex items-center justify-between">
                   <label htmlFor="datumOdjave">Datum odjave</label>
                 </div>
-                <input type="date" name="datumOdjave" id="datumOdjave" value={datumOdjave} min={minDatumOdjave} onChange={(e) => postaviDatumOdjave(e.target.value)} className='form-input' />
+                <input type="date" name="datumOdjave" id="datumOdjave" className={`form-input ${datumError ? 'border-accent' : ''}`} value={datumOdjave} min={minDatumOdjave} onChange={(e) => postaviDatumOdjave(e.target.value)} />
               </div>
               <div className="col-span-2 flex items-center gap-3">
                 <button className="btn btn-primary w-1/2" disabled={!ispravniDatumi || !ctx.ulogovan} onClick={napraviRezervaciju}>Rezerviši</button>
