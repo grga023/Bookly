@@ -42,3 +42,15 @@ export const formatirajDatum = (datum) => {
 
   return `${year}-${month}-${day}`;
 }
+
+export const minMaxDatum = () => {
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  const tomorrowFormatted = formatirajDatum(tomorrow);
+
+  const dayAfterTomorrow = new Date();
+  dayAfterTomorrow.setDate(dayAfterTomorrow.getDate() + 2);
+  const dayAfterTomorrowFormatted = formatirajDatum(dayAfterTomorrow);
+
+  return [tomorrowFormatted, dayAfterTomorrowFormatted]
+}
