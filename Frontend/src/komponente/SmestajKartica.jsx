@@ -15,7 +15,7 @@ export default function SmestajKartica({ id, slike, naziv, opis, mesto, drzava, 
         <div className="p-4">
           <div className="flex justify-between items-centar">
             <h2 className="text-xl">{naziv}</h2>
-            <span className="text-primary">{formatiranaOcena}/10</span>
+            <span className="text-primary">{formatiranaOcena}/5</span>
           </div>
           <div>
             <p className="my-3">{kratakOpis}</p>
