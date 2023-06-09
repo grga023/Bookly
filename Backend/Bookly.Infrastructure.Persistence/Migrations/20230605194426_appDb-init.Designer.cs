@@ -4,6 +4,7 @@ using Bookly.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Bookly.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(AplikacioniDbContext))]
-    partial class AplikacioniDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230605194426_appDb-init")]
+    partial class appDbinit
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -27,9 +30,6 @@ namespace Bookly.Infrastructure.Persistence.Migrations
                     b.Property<Guid>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<decimal>("Cena")
-                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("Drzava")
                         .IsRequired()

@@ -1,0 +1,40 @@
+version: '3.4'
+services:
+  bookly-client:
+    image: bookly-client
+    build:
+      context: .
+      dockerfile: Frontend/Dockerfile.dev
+    ports:
+      - 8000:8000
+    tty: true
+
+  booklyapi:
+    image: bookly-api
+    ports:
+      - 4300:80
+    build:
+      context: .
+      dockerfile: Backend/Bookly.API/Dockerfile
+    depends_on:
+      - database
+    environment:
+       ASPNETCORE_ENVIRONMENT: Staging
+       ASPNETCORE_URLS: http://+:80
+    command:
+      - Identity:Database:ConnectionString=Server=database;Database=IdentityDatabase;TrustServerCertificate=true;Encrypt=false;User Id=sa;Password=Bookly123!;
+      - DataAccess:Database:ConnectionString=Server=database;Database=BooklyDatabase;TrustServerCertificate=true;Encrypt=false;User Id=sa;Password=Bookly123!;
+
+  database:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=Bookly123!
+    restart: always
+    ports:
+      - 1433:1433
+    volumes:
+      - database_volume:/var/opt/mssql
+
+volumes:
+  database_volume:

@@ -1,6 +1,8 @@
 ﻿using Bookly.Domain.Apstrakcije;
 using Bookly.Domain.Apstrakcije.Baza;
+using Bookly.Domain.Entiteti;
 using Bookly.Domain.Servisi.Korisnik.DTO;
+using System.Reflection.Metadata.Ecma335;
 using Entiteti = Bookly.Domain.Entiteti; 
 
 namespace Bookly.Domain.Servisi.Korisnik;
@@ -50,4 +52,19 @@ public class KorisnikServis
 
     public async Task ResetujSifruAsync(string email, string token, string noviPassword) => 
         await _identityServis.ResetujSifruAsync(email, token, noviPassword);
+
+    public async Task ModifikujKorisnikaAsync(Guid id, NoviKorisnikDTO izmenjenKorisnik) {
+        Entiteti.Korisnik korisnikZaIzmeniti = await _aplikacioniDbContext.Kornisici.FindAsync(id) ?? 
+            throw new KeyNotFoundException("Korisnik sa unetim ID-em ne postoji.");
+
+        korisnikZaIzmeniti.DatumRodjenja = izmenjenKorisnik.DatumRodjenja;
+        korisnikZaIzmeniti.Adresa = izmenjenKorisnik.Adresa;
+        korisnikZaIzmeniti.Ime = izmenjenKorisnik.Ime;
+        korisnikZaIzmeniti.Prezime = izmenjenKorisnik.Prezime;
+
+        await _aplikacioniDbContext.SaveChangesAsync();
+    }
+
+    public async Task<Entiteti.Korisnik> DobaviKorisnikaPoId(Guid korisnikId) =>
+        await _aplikacioniDbContext.Kornisici.FindAsync(korisnikId) ?? throw new KeyNotFoundException($"Korisnik sa ID-em: {korisnikId} ne postoji!");
 }
