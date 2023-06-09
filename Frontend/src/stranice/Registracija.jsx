@@ -1,6 +1,8 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 
 import { validirajDatum, validirajMejl, validirajSifru } from "../funkcije";
+import { AuthContext } from "../App";
 
 export default function Registracija() {
   const [izabraniDatum, postaviIzabraniDatum] = useState("");
@@ -17,6 +19,9 @@ export default function Registracija() {
   const [sifraError, postaviSifraError] = useState('');
   const [adresaError, postaviAdresaError] = useState('');
   const [datumError, postaviDatumError] = useState('');
+
+  const navigacija = useNavigate();
+  const ctx = useContext(AuthContext)
 
   const validirajFormu = () => {
     let validnaForma = true;
@@ -96,6 +101,9 @@ export default function Registracija() {
       postaviIzabraniDatum("");
       postaviAdresu("");
       postaviEmail("");
+
+      ctx.postaviUlogovan(true);
+      navigacija("/");
       
     } catch (error) {
       postaviEmailError("Ovaj email je već u upotrebi");

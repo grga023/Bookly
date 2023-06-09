@@ -1,6 +1,8 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 
 import { validirajSifru } from "../funkcije";
+import { AuthContext } from "../App";
 
 export default function Login() {
   const [email, postaviEmail] = useState("");
@@ -13,6 +15,8 @@ export default function Login() {
   const [novaSifraError, postaviNovaSifraError] = useState('');
   const [zaboravljenaSifraOdabrano, postaviZaboravljenaSifraOdabrano] = useState(false)
   const [logovanjeKorisnika, postaviLogovanje] = useState(false);
+  const ctx = useContext(AuthContext);
+  const navigacija = useNavigate();
 
   const validirajFormu = () => {
     let validnaForma = true;
@@ -78,15 +82,14 @@ export default function Login() {
         body: JSON.stringify(korisnik)
       })
 
-      if(!odgovor.ok){
-        throw new Error("Šifra nija tačna");
-      }
-
       postaviEmail("");
       postaviSifru("");
-
+      ctx.postaviUlogovan(true);
+      navigacija('/');
+      
     } catch (error) {
-      postaviSifraError(error)
+      postaviEmailError("Uneti netačni podaci");
+      postaviSifraError("Uneti netačni podaci");
     }
     
     postaviLogovanje(false);
