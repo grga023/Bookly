@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom"
-import { formatirajOcenu, brojKaoDinar, formatirajDatum } from "../funkcije";
+import { formatirajOcenu, brojKaoDinar, formatirajDatum, minMaxDatum } from "../funkcije";
 import { useState, useEffect, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import ulogujSe from "../slike/ulogujse.svg";
@@ -25,12 +25,9 @@ export default function Smestaj() {
   const [zauzetiDatumi, postaviZauzeteDatume] = useState([]);
   const navigacija = useNavigate();
 
-  const minDatumPrijave = new Date().toISOString().split('T')[0];
-  const sutra = new Date();
-  sutra.setDate(sutra.getDate() + 1);
-  const minDatumOdjave = sutra.toISOString().split('T')[0];
+  const [minDatumPrijave, minDatumOdjave] = minMaxDatum();
 
-  const [startDate, setStartDate] = useState(new Date());
+  const [startDate, setStartDate] = useState(Date.parse(minDatumPrijave));
   const [endDate, setEndDate] = useState(Date.parse(minDatumOdjave));
 
   const ctx = useContext(AuthContext);
@@ -112,13 +109,13 @@ export default function Smestaj() {
                 <div className="flex items-center justify-between">
                   <label htmlFor="datumPrijave">Datum prijave</label>
                 </div>
-                <DatePicker excludeDates={zauzetiDatumi} className={`form-input ${datumError ? 'border-accent' : ''}`} minDate={Date.parse(minDatumPrijave)} selected={startDate} onChange={(date) => setStartDate(date)} showTimeSelect />
+                <DatePicker excludeDates={zauzetiDatumi} className={`form-input ${datumError ? 'border-accent' : ''}`} minDate={Date.parse(minDatumPrijave)} selected={startDate} onChange={(date) => setStartDate(date)} showTimeSelect={false} />
               </div>
               <div>
                 <div className="flex items-center justify-between">
                   <label htmlFor="datumOdjave">Datum odjave</label>
                 </div>
-                <DatePicker excludeDates={zauzetiDatumi} className={`form-input ${datumError ? 'border-accent' : ''}`} minDate={Date.parse(minDatumOdjave)} selected={endDate} onChange={(date) => setEndDate(date)} showTimeSelect />
+                <DatePicker excludeDates={zauzetiDatumi} className={`form-input ${datumError ? 'border-accent' : ''}`} minDate={Date.parse(minDatumOdjave)} selected={endDate} onChange={(date) => setEndDate(date)} showTimeSelect={false} />
               </div>
               <div className="col-span-2 flex items-center gap-3">
                 <button className="btn btn-primary w-1/2" disabled={!ispravniDatumi || !ctx.ulogovan || postavljanjeRezervacije} onClick={napraviRezervaciju}>{postavljanjeRezervacije ? 'Pravimo rezervaciju...' : 'Rezerviši'}</button>
