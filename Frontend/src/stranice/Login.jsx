@@ -135,7 +135,7 @@ export default function Login() {
           <input type="password" id="sifra" name="sifra" placeholder="s91D0?s90._a" value={sifra} onChange={(e) => postaviSifru(e.target.value)} className={`form-input ${sifraError ? 'border-accent' : ''}`} />
         </div>
         <div className="flex items-center justify-between">
-          <button type="submit" className="btn btn-primary px-12">{logovanjeKorisnika ? "Logovanje..." : "Uloguj se"}</button>
+          <button type="submit" className="btn btn-primary px-12" disabled={logovanjeKorisnika}>{logovanjeKorisnika ? "Logovanje..." : "Uloguj se"}</button>
           <button type="button" className="cursor-pointer text-primary hover:underline" onClick={() => postaviZaboravljenaSifraOdabrano(true)}>Zaboravljena šifra?</button>
         </div>
       </form>}

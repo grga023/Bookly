@@ -1,9 +1,12 @@
 import { useParams } from "react-router-dom"
-import { formatirajOcenu, brojKaoDinar } from "../funkcije";
+import { formatirajOcenu, brojKaoDinar, formatirajDatum } from "../funkcije";
 import { useState, useEffect, useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ulogujSe from "../slike/ulogujse.svg";
 import { AuthContext } from "../App";
+
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const izracunajBrojNocenja = (datumPrijave, datumOdjave) => {
   const prijava = new Date(datumPrijave);
@@ -15,11 +18,21 @@ const izracunajBrojNocenja = (datumPrijave, datumOdjave) => {
 }
 
 export default function Smestaj() {
-  const [datumPrijave, postaviDatumPrijave] = useState('');
-  const [datumOdjave, postaviDatumOdjave] = useState('');
   const [datumError, postaviDatumError] = useState(false);
   const { id } = useParams();
   const [smestaj, setSmestaj] = useState(null);
+  const [postavljanjeRezervacije, postaviPostavljanjeRezervacije] = useState(false);
+  const [zauzetiDatumi, postaviZauzeteDatume] = useState([]);
+  const navigacija = useNavigate();
+
+  const minDatumPrijave = new Date().toISOString().split('T')[0];
+  const sutra = new Date();
+  sutra.setDate(sutra.getDate() + 1);
+  const minDatumOdjave = sutra.toISOString().split('T')[0];
+
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(Date.parse(minDatumOdjave));
+
   const ctx = useContext(AuthContext);
   
   useEffect(() => {
@@ -32,15 +45,30 @@ export default function Smestaj() {
         console.error('Greska prilikom dobijanja podataka:', error);
       }
     };
-    
+
     fetchData();
   }, [id]);
+
+  useEffect(() => {
+    const dobiZauzeteDatume = async () => {
+      try {
+        const odgovor = await fetch(`http://localhost:4300/api/Rezervacije/zauzeti-datumi?apartmanId=${id}`);
+        const datumi = await odgovor.json();
+        postaviZauzeteDatume(datumi.map(datum => new Date(datum)));
+      } catch (error) {
+        console.error('Greska prilikom dobijanja podataka:', error);
+      }
+    };
+    
+    dobiZauzeteDatume();
+  }, [id])
   
   const napraviRezervaciju = async (e) => {
     e.preventDefault();
+    postaviPostavljanjeRezervacije(true);
 
-    const url = `http://localhost:4300/api/Rezervacije?apartmanId=${id}&datumDolaska=${datumPrijave}&datumOdlaska=${datumOdjave}`;
-
+    const url = `http://localhost:4300/api/Rezervacije?apartmanId=${id}&datumDolaska=${formatirajDatum(startDate)}&datumOdlaska=${formatirajDatum(endDate)}`;
+    
     try {
       const odgovor = await fetch(url, {
         method: "POST",
@@ -49,30 +77,22 @@ export default function Smestaj() {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          apartmanId: id,
-          datumDolaska: datumPrijave,
-          datumOdlaska: datumOdjave
-        })
       });
-
-
+      
       alert("Uspesno ste izvrsili rezervaciju!")
-      postaviDatumOdjave("");
-      postaviDatumPrijave("");
-
+      setStartDate(new Date());
+      setEndDate(Date.parse(minDatumOdjave));
+      navigacija("/")
+      
     } catch (error) {
       postaviDatumError(true);
     }
+
+    postaviPostavljanjeRezervacije(false);
   }
 
-  const minDatumPrijave = new Date().toISOString().split('T')[0];
-  const sutra = new Date();
-  sutra.setDate(sutra.getDate() + 1);
-  const minDatumOdjave = sutra.toISOString().split('T')[0];
-
-  const odabraniBrojNocenja = izracunajBrojNocenja(datumPrijave, datumOdjave);
-  const ispravniDatumi = datumPrijave !== '' && datumOdjave !== '' && odabraniBrojNocenja > 0;
+  const odabraniBrojNocenja = izracunajBrojNocenja(startDate, endDate);
+  const ispravniDatumi = startDate !== '' && endDate !== '' && startDate < endDate && odabraniBrojNocenja > 0;
   const cenaRezervacije = brojKaoDinar(odabraniBrojNocenja * smestaj?.cena);
 
   return (
@@ -85,23 +105,23 @@ export default function Smestaj() {
             <div>
               <p className="font-medium">Mesto: <span className="font-normal text-primary">{smestaj?.mesto}, {smestaj?.drzava}</span></p>
               <p className="font-medium">Cena noćenja: <span className="font-normal text-primary">{brojKaoDinar(smestaj?.cena)}</span></p>
-              <p className="font-medium">Ocena smeštaja: <span className="font-normal text-primary">{formatirajOcenu(smestaj?.ocena)}</span>/10</p>
+              <p className="font-medium">Ocena smeštaja: <span className="font-normal text-primary">{formatirajOcenu(smestaj?.ocena)}</span>/5</p>
             </div>
             <form className="mt-12 grid grid-cols-2 gap-3 w-1/2" onSubmit={napraviRezervaciju}>
               <div>
                 <div className="flex items-center justify-between">
                   <label htmlFor="datumPrijave">Datum prijave</label>
                 </div>
-                <input type="date" name="datumPrijave" id="datumPrijave" className={`form-input ${datumError ? 'border-accent' : ''}`} value={datumPrijave} min={minDatumPrijave} onChange={(e) => postaviDatumPrijave(e.target.value)} />
+                <DatePicker excludeDates={zauzetiDatumi} className={`form-input ${datumError ? 'border-accent' : ''}`} minDate={Date.parse(minDatumPrijave)} selected={startDate} onChange={(date) => setStartDate(date)} showTimeSelect />
               </div>
               <div>
                 <div className="flex items-center justify-between">
                   <label htmlFor="datumOdjave">Datum odjave</label>
                 </div>
-                <input type="date" name="datumOdjave" id="datumOdjave" className={`form-input ${datumError ? 'border-accent' : ''}`} value={datumOdjave} min={minDatumOdjave} onChange={(e) => postaviDatumOdjave(e.target.value)} />
+                <DatePicker excludeDates={zauzetiDatumi} className={`form-input ${datumError ? 'border-accent' : ''}`} minDate={Date.parse(minDatumOdjave)} selected={endDate} onChange={(date) => setEndDate(date)} showTimeSelect />
               </div>
               <div className="col-span-2 flex items-center gap-3">
-                <button className="btn btn-primary w-1/2" disabled={!ispravniDatumi || !ctx.ulogovan} onClick={napraviRezervaciju}>Rezerviši</button>
+                <button className="btn btn-primary w-1/2" disabled={!ispravniDatumi || !ctx.ulogovan || postavljanjeRezervacije} onClick={napraviRezervaciju}>{postavljanjeRezervacije ? 'Pravimo rezervaciju...' : 'Rezerviši'}</button>
                 {ispravniDatumi && <div className="w-1/2">
                   <p className="font-medium">Broj noćenja: {odabraniBrojNocenja}</p>
                   <p className="font-medium">Cena: {cenaRezervacije}</p>
