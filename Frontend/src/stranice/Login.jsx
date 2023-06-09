@@ -106,13 +106,37 @@ export default function Login() {
     validnaForma && ulogujKorisnika(korisnik);
   }
 
+  const posaljiToken = async () => {
+    try {
+      const odgovor = await fetch(`http://localhost:4300/api/Korisnici/token-zaboravljena-sifra?email=${encodeURIComponent(email)}`);
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const resetujSifru = async () => {
+    try {
+      const odgovor = await fetch(`http://localhost:4300/api/Korisnici/resetuj-sifru?email=${encodeURI(email)}&token=${token}&novaLozinka=${novaSifra}`, {
+        method: "POST"
+      });
+
+      if(odgovor.ok){
+        navigacija("/")
+        postaviZaboravljenaSifraOdabrano(false);
+      }
+
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   const promenaSifre = (e) => {
     e.preventDefault();
 
     const validnaForma = validirajPromenuSifre();
 
     if(validnaForma){
-      console.log('validna')
+      resetujSifru();
     } else return;
   }
 
@@ -136,7 +160,10 @@ export default function Login() {
         </div>
         <div className="flex items-center justify-between">
           <button type="submit" className="btn btn-primary px-12" disabled={logovanjeKorisnika}>{logovanjeKorisnika ? "Logovanje..." : "Uloguj se"}</button>
-          <button type="button" className="cursor-pointer text-primary hover:underline" onClick={() => postaviZaboravljenaSifraOdabrano(true)}>Zaboravljena šifra?</button>
+          <button type="button" className="cursor-pointer text-primary hover:underline" onClick={() => {
+            postaviZaboravljenaSifraOdabrano(true);
+            posaljiToken();
+          }}>Zaboravljena šifra?</button>
         </div>
       </form>}
       {zaboravljenaSifraOdabrano && <form className="container-form-mini mx-auto grid gap-4" onSubmit={promenaSifre} noValidate>
@@ -149,7 +176,7 @@ export default function Login() {
         </div>
            <div>
           <div className="flex items-center justify-between">
-            <label htmlFor="token">Token</label>
+            <label htmlFor="token">Token (unesi sa email-a)</label>
             <span className={`${tokenError ? 'error error--aktivan' : 'error'}`}>{tokenError}</span>
           </div>
           <input type="text" id="token" name="token" placeholder="aieojda8931mcad" value={token} onChange={(e) => postaviToken(e.target.value)} className={`form-input ${tokenError ? 'border-accent' : ''}`} />
