@@ -82,17 +82,14 @@ export default function Login() {
         body: JSON.stringify(korisnik)
       })
 
-      if(!odgovor.ok){
-        throw new Error("Šifra nija tačna");
-      }
-
       postaviEmail("");
       postaviSifru("");
       ctx.postaviUlogovan(true);
       navigacija('/');
-
+      
     } catch (error) {
-      postaviSifraError(error)
+      postaviEmailError("Uneti netačni podaci");
+      postaviSifraError("Uneti netačni podaci");
     }
     
     postaviLogovanje(false);
