@@ -142,7 +142,7 @@ export default function Login() {
 
   return (
     <section className="grid" aria-label="Napravi novi profil na aplikaciji">
-      <h1 className="mb-12 text-center">Uloguj se</h1>
+      <h1 className="mb-12 text-center">{zaboravljenaSifraOdabrano ? "Promena šifre" : "Uloguj se"}</h1>
       {!zaboravljenaSifraOdabrano && <form className="container-form-mini mx-auto grid gap-4" onSubmit={logovanje} noValidate>
         <div>
           <div className="flex items-center justify-between">
