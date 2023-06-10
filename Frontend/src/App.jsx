@@ -8,6 +8,7 @@ export const AuthContext = createContext({});
 
 function App() {
   const [ulogovan, postaviUlogovan] = useState(false);
+  const [korisnikInfo, postaviKorisnikInfo] = useState({});
 
   const korisnikUlogovan = async () => {
     try {
@@ -20,6 +21,9 @@ function App() {
         postaviUlogovan(false);
       } else {
         postaviUlogovan(true);
+        const korisnik = await odgovor.json();
+        console.log(korisnik)
+        postaviKorisnikInfo(korisnik)
       }
 
     } catch (error) {
@@ -29,10 +33,10 @@ function App() {
 
   useEffect(() => {
     korisnikUlogovan();
-  }, [])
+  }, [ulogovan])
 
   return (
-    <AuthContext.Provider value={{ulogovan, postaviUlogovan}}>
+    <AuthContext.Provider value={{ulogovan, postaviUlogovan, korisnikInfo}}>
       <Header />
       <main className="my-20 container">
         <AppRoutes />
