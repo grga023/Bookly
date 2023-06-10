@@ -54,6 +54,9 @@ public class IdentityServis : IIdentityServis
         ApplicationUser korisnikZaResetovanjeSifre = await _userManager.FindByEmailAsync(email) ??
             throw new KeyNotFoundException("Korisnik sa unetom e-mail adresom ne postoji");
 
+        if (!await _userManager.VerifyUserTokenAsync(korisnikZaResetovanjeSifre, new TokenOptions().PasswordResetTokenProvider, UserManager<ApplicationUser>.ResetPasswordTokenPurpose, token))
+            throw new ArgumentException("Uneti token nije validan!");
+            
         await _userManager.ResetPasswordAsync(korisnikZaResetovanjeSifre, token, noviPassword);
     }
 }
