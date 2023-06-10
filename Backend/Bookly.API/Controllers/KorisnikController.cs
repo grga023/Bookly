@@ -1,5 +1,6 @@
 ﻿using Bookly.API.Modeli.Request;
 using Bookly.API.Utils;
+using Bookly.Domain.Entiteti;
 using Bookly.Domain.Servisi.Korisnik;
 using Bookly.Domain.Servisi.Korisnik.DTO;
 using Bookly.Infrastructure.Identity;
@@ -44,5 +45,10 @@ namespace Bookly.API.Controllers
         [Authorize(Roles = IdentityUloge.KORISNIK)]
         public async Task ModifikujKorisnika(NoviKorisnikDTO izmenjeniKorisnikDto) =>
             await _korisnikServis.ModifikujKorisnikaAsync(ID, izmenjeniKorisnikDto);
+
+        [HttpGet("me")]
+        [Authorize(Roles = IdentityUloge.KORISNIK)]
+        public async Task<Korisnik> DobaviKorisnikaPoId() => 
+            await _korisnikServis.DobaviKorisnikaPoId(ID);
     }
 }

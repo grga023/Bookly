@@ -1,6 +1,8 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 
 import { validirajSifru } from "../funkcije";
+import { AuthContext } from "../App";
 
 export default function Login() {
   const [email, postaviEmail] = useState("");
@@ -13,6 +15,8 @@ export default function Login() {
   const [novaSifraError, postaviNovaSifraError] = useState('');
   const [zaboravljenaSifraOdabrano, postaviZaboravljenaSifraOdabrano] = useState(false)
   const [logovanjeKorisnika, postaviLogovanje] = useState(false);
+  const ctx = useContext(AuthContext);
+  const navigacija = useNavigate();
 
   const validirajFormu = () => {
     let validnaForma = true;
@@ -78,15 +82,14 @@ export default function Login() {
         body: JSON.stringify(korisnik)
       })
 
-      if(!odgovor.ok){
-        throw new Error("Šifra nija tačna");
-      }
-
       postaviEmail("");
       postaviSifru("");
-
+      ctx.postaviUlogovan(true);
+      navigacija('/');
+      
     } catch (error) {
-      postaviSifraError(error)
+      postaviEmailError("Uneti netačni podaci");
+      postaviSifraError("Uneti netačni podaci");
     }
     
     postaviLogovanje(false);
@@ -103,19 +106,43 @@ export default function Login() {
     validnaForma && ulogujKorisnika(korisnik);
   }
 
+  const posaljiToken = async () => {
+    try {
+      const odgovor = await fetch(`http://localhost:4300/api/Korisnici/token-zaboravljena-sifra?email=${encodeURIComponent(email)}`);
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const resetujSifru = async () => {
+    try {
+      const odgovor = await fetch(`http://localhost:4300/api/Korisnici/resetuj-sifru?email=${encodeURI(email)}&token=${token}&novaLozinka=${novaSifra}`, {
+        method: "POST"
+      });
+
+      if(odgovor.ok){
+        navigacija("/")
+        postaviZaboravljenaSifraOdabrano(false);
+      }
+
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   const promenaSifre = (e) => {
     e.preventDefault();
 
     const validnaForma = validirajPromenuSifre();
 
     if(validnaForma){
-      console.log('validna')
+      resetujSifru();
     } else return;
   }
 
   return (
     <section className="grid" aria-label="Napravi novi profil na aplikaciji">
-      <h1 className="mb-12 text-center">Uloguj se</h1>
+      <h1 className="mb-12 text-center">{zaboravljenaSifraOdabrano ? "Promena šifre" : "Uloguj se"}</h1>
       {!zaboravljenaSifraOdabrano && <form className="container-form-mini mx-auto grid gap-4" onSubmit={logovanje} noValidate>
         <div>
           <div className="flex items-center justify-between">
@@ -132,8 +159,11 @@ export default function Login() {
           <input type="password" id="sifra" name="sifra" placeholder="s91D0?s90._a" value={sifra} onChange={(e) => postaviSifru(e.target.value)} className={`form-input ${sifraError ? 'border-accent' : ''}`} />
         </div>
         <div className="flex items-center justify-between">
-          <button type="submit" className="btn btn-primary px-12">{logovanjeKorisnika ? "Logovanje..." : "Uloguj se"}</button>
-          <button type="button" className="cursor-pointer text-primary hover:underline" onClick={() => postaviZaboravljenaSifraOdabrano(true)}>Zaboravljena šifra?</button>
+          <button type="submit" className="btn btn-primary px-12" disabled={logovanjeKorisnika}>{logovanjeKorisnika ? "Logovanje..." : "Uloguj se"}</button>
+          <button type="button" className="cursor-pointer text-primary hover:underline" onClick={() => {
+            postaviZaboravljenaSifraOdabrano(true);
+            posaljiToken();
+          }}>Zaboravljena šifra?</button>
         </div>
       </form>}
       {zaboravljenaSifraOdabrano && <form className="container-form-mini mx-auto grid gap-4" onSubmit={promenaSifre} noValidate>
@@ -146,7 +176,7 @@ export default function Login() {
         </div>
            <div>
           <div className="flex items-center justify-between">
-            <label htmlFor="token">Token</label>
+            <label htmlFor="token">Token (unesi sa email-a)</label>
             <span className={`${tokenError ? 'error error--aktivan' : 'error'}`}>{tokenError}</span>
           </div>
           <input type="text" id="token" name="token" placeholder="aieojda8931mcad" value={token} onChange={(e) => postaviToken(e.target.value)} className={`form-input ${tokenError ? 'border-accent' : ''}`} />

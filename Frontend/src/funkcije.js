@@ -32,3 +32,25 @@ export const validirajMejl = (mejl) => {
 
   return regex.test(mejl);
 }
+
+export const formatirajDatum = (datum) => {
+  const decodedString = decodeURIComponent(datum);
+  const dateObject = new Date(decodedString);
+  const year = dateObject.getFullYear();
+  const month = (dateObject.getMonth() + 1).toString().padStart(2, '0');
+  const day = dateObject.getDate().toString().padStart(2, '0');
+
+  return `${year}-${month}-${day}`;
+}
+
+export const minMaxDatum = () => {
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  const tomorrowFormatted = formatirajDatum(tomorrow);
+
+  const dayAfterTomorrow = new Date();
+  dayAfterTomorrow.setDate(dayAfterTomorrow.getDate() + 2);
+  const dayAfterTomorrowFormatted = formatirajDatum(dayAfterTomorrow);
+
+  return [tomorrowFormatted, dayAfterTomorrowFormatted]
+}
