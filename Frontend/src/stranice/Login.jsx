@@ -116,7 +116,7 @@ export default function Login() {
 
   const resetujSifru = async () => {
     try {
-      const odgovor = await fetch(`http://localhost:4300/api/Korisnici/resetuj-sifru?email=${encodeURI(email)}&token=${token}&novaLozinka=${novaSifra}`, {
+        const odgovor = await fetch(`http://localhost:4300/api/Korisnici/resetuj-sifru?email=${encodeURI(email)}&token=${encodeURIComponent(token)}&novaLozinka=${novaSifra}`, {
         method: "POST"
       });
 
