@@ -47,7 +47,7 @@ export default function Header(){
             </li>
           </>}
           {ctx.ulogovan && <>
-            <li>Ulogovan kao: {ctx.korisnikInfo.ime}</li>
+            <li><span className="font-medium">Ulogovan kao:</span> {ctx.korisnikInfo.ime}</li>
             <li>
               <Link to="/" className="btn btn-primary" onClick={izlogujSe}>Izloguj se</Link>
             </li>

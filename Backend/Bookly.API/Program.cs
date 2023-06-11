@@ -1,3 +1,4 @@
+using Bookly.API.Middlewares;
 using Bookly.Domain.Apstrakcije;
 using Bookly.Domain.Apstrakcije.Baza;
 using Bookly.Domain.Servisi.Korisnik;
@@ -9,6 +10,7 @@ using Bookly.Infrastructure.Identity.Entiteti;
 using Bookly.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client;
 using System;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -100,7 +102,6 @@ builder.Services.AddScoped<RezervacijaServis>();
 
 builder.Configuration.AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json").AddEnvironmentVariables();
 
-
 builder.Services.AddAuthorization();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -108,12 +109,14 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 
-
 var app = builder.Build();
+
+bool isDevelopment = false;
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    isDevelopment = true;
     app.UseSwagger();
     app.UseSwaggerUI();
 }
@@ -131,7 +134,10 @@ if (app.Environment.IsStaging())
     }
 }
 
+app.UseMiddleware<ExceptionMiddleware>(isDevelopment);
+
 //app.UseHttpsRedirection();
+
 app.UseCors("MyAllowSpecificOrigins");
 
 app.UseAuthentication();
