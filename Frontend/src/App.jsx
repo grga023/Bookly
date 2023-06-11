@@ -22,7 +22,6 @@ function App() {
       } else {
         postaviUlogovan(true);
         const korisnik = await odgovor.json();
-        console.log(korisnik)
         postaviKorisnikInfo(korisnik)
       }
 
