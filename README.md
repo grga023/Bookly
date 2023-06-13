@@ -46,6 +46,6 @@ Ovde možete navesti nekoliko primera use case-ova kako bi bolje razumeli svrhu 
 ## Autori
 
 - [Dušan Lukić SI 15/20](https://github.com/dusanlukic404)
-- [Dušan Runjevac SI 17/20](https://github.com/runjevac)
-- [Stefan Đurđević SI 18/20](https://github.com/djurdjevics)
+- [Dušan Runjevac SI 18/20](https://github.com/runjevac)
+- [Stefan Đurđević SI 17/20](https://github.com/djurdjevics)
 - [Ognjen Grgur SI 10/20](https://github.com/grga023)
